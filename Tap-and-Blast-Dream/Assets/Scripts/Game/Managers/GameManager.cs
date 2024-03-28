@@ -7,6 +7,7 @@ public class GameManager : Singleton<GameManager>
 {
     private GameStateManager _gameStateManager;
     private bool _isApplicationRunning;
+    private bool _isInGame = false;
     void Awake()
     {
         DontDestroyOnLoad(this);
@@ -20,6 +21,21 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    private void OnEnable() {
+        
+        Events.GameEvents.OnPlay += StartGame;
+    }
+
+    private void OnDisable() {
+        Events.GameEvents.OnPlay -= StartGame;
+    }
+
+    private void StartGame() {
+        if (_isApplicationRunning) {
+            _gameStateManager.SwitchState(new InGameState());
+            _isInGame = true;
+        }
+    }
 
 
 

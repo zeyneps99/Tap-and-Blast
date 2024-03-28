@@ -16,9 +16,11 @@ public class SceneManager : Singleton<SceneManager>
         }
     }
 
-
     private string SceneTypeToSceneName(int sceneType)
     {
        return ((SceneTypes)sceneType).ToString();  
     }
+
+
+
 }

@@ -6,7 +6,7 @@ public class InGameState : IGameState
 {
     public void Enter()
     {
-        throw new System.NotImplementedException();
+        GameLogic.Instance.StartGame();
     }
 
     public void Exit()
