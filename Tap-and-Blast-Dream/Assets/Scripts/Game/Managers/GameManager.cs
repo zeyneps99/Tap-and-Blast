@@ -31,7 +31,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     private void StartGame() {
-        if (_isApplicationRunning) {
+        if (_isApplicationRunning && !_isInGame) {
             _gameStateManager.SwitchState(new InGameState());
             _isInGame = true;
         }

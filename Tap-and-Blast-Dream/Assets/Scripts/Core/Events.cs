@@ -7,6 +7,7 @@ public static partial class Events
 {
     public static class CoreEvents
     {
+        public static Action<Command> OnCommand;
     }
     public static class GameEvents
     {
