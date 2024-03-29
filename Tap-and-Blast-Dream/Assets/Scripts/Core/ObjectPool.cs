@@ -24,9 +24,14 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         {
             Add(_amount);
         }
-        var a = _pool.Dequeue();
-        a.gameObject.SetActive(true);
-        return a;
+        if (_pool.Count > 0) {
+            var obj = _pool.Dequeue();
+            obj.gameObject.SetActive(true);
+            return obj;
+        } else {
+            Debug.LogWarning(typeof(T) + " pool empty");
+            return null;
+        }
     }
 
     public void Put(T obj)

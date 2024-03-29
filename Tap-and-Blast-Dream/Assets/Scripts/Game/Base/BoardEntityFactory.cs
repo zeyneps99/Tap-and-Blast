@@ -11,7 +11,7 @@ public class BoardEntityFactory
     private GameObject _cubePrefab;
     private GameObject _TNTprefab;
 
-    private static string _prefabPath = "/BoardEntity/";
+    private static string _prefabPath = "Prefabs/BoardEntity/";
     
     public BoardEntityFactory(Transform parent){
         _parent = parent;
@@ -21,11 +21,12 @@ public class BoardEntityFactory
     
    private void GetPrefabs() {
 
-       Cube cube = Resources.Load<Cube>(_prefabPath);
+       Cube cube = Resources.Load<Cube>(_prefabPath + "Cube");
+       Debug.Log("cube " + cube);
        if (cube != null) {
         _cubePrefab = cube.gameObject;
        }
-       TNT tnt = Resources.Load<TNT>(_prefabPath);
+       TNT tnt = Resources.Load<TNT>(_prefabPath + "TNT");
        if (tnt != null) {
         _TNTprefab = tnt.gameObject;
        }
@@ -39,13 +40,25 @@ public class BoardEntityFactory
     public Cube GetCube(int cubeType) {
 
         Cube cube = _cubePool.Get();
-        cube.SetType(cubeType);
+        if (cube != null) {
+            cube.SetType(cubeType);
+        }
         return cube;
     }
 
     public TNT GetTNT() {
         TNT tnt = _TNTPool.Get();
         return tnt;
+    }
+
+    public void Return(BoardEntity entityToReturn) {
+        if (entityToReturn.TryGetComponent(out Cube cube)) {
+            _cubePool.Put(cube);
+        }
+
+        else if(entityToReturn.TryGetComponent(out TNT tnt)) {
+            _TNTPool.Put(tnt);
+        }
     }
 
 }

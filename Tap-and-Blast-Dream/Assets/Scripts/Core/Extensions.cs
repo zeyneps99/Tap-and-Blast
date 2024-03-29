@@ -1,6 +1,8 @@
 
 
 
+using System.Collections.Generic;
+
 public static class Extensions {
 
     public static bool Equals(this string str1, string str2) {
@@ -14,6 +16,17 @@ public static class Extensions {
         if (str1.Trim().Equals(str2.Trim())){
             return true;
         } else {
+            return false;
+        }
+    }
+
+    public static bool ContainsKeySafe<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key) 
+    {
+        if (dict != null && dict.Keys.Count > 0)
+        {
+            return dict.ContainsKey(key);
+        } else
+        {
             return false;
         }
     }

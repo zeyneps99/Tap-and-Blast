@@ -16,9 +16,10 @@ public class Board : MonoBehaviour
     private BoardEntityFactory _factory;
 
 
-    private void Start() {
+    private void Awake() {
         _factory = new BoardEntityFactory(transform);
     }
+
    public void Set(int width, int height, string[] grid) {
     Width = width;
     Height = height;
@@ -30,11 +31,15 @@ public class Board : MonoBehaviour
 
         BoardEntity[] entityArr = GetGridItems(grid);
         
-      if (_container == null || entityArr == null)
+      if (_container == null)
         {
-            return;
+            Debug.LogWarning("Container of board is empty")
+;           return;
         }
 
+      if(entityArr == null) {
+        return;
+      }
         SetGridLayout(_container);
 
         int count = 0;
@@ -75,28 +80,35 @@ public class Board : MonoBehaviour
                     float _itemWidth = cubeRT.rect.width;
                     layout.cellSize = Vector2.one * _itemWidth;
                 }
+                _factory.Return(sampleCube);
             }
+
         }
     }
 
     private BoardEntity[] GetGridItems(string[] grid) {
+      
+      BoardEntity[] arr = new BoardEntity[grid.Length];
 
       if (grid == null || grid.Length == 0) {
-        return null;
+        return arr;
       }
-        BoardEntity[] arr = new BoardEntity[grid.Length];
-        // for(int i = 0; i < grid.Length; i++) {
-
-        //    BoardEntity entity = StringToEntity(grid[i]);
-        //    if (entity != null) {
-        //     arr[i] = entity;
-        //    }
-        // }
+        for(int i = 0; i < grid.Length; i++) {
+           BoardEntity entity = StringToEntity(grid[i]);
+           if (entity != null) {
+            arr[i] = entity;
+           }
+        }
         return arr;
     }
 
+    //TODO: add remaining types  
     private BoardEntity StringToEntity(string str) {
 
+      if (_factory == null) {
+        Debug.LogWarning("Factory is null");
+        return null;
+      }
       if(str.Equals("r")) {
         return _factory.GetCube((int) CubeTypes.Red);
       }   
@@ -115,8 +127,9 @@ public class Board : MonoBehaviour
       if(str.Equals("tnt")) {
         return _factory.GetTNT();
       }
+      //TODO: change for others
       else {
-        return null;
+        return _factory.GetCube(Random.Range(1, 5));
       }
         
     }
