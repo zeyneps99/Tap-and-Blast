@@ -6,7 +6,7 @@ public class IdleState : IGameState
 {
     public void Enter()
     {
-        GameLogic.Instance.StartMainScene();
+        GameManager.Instance.StartMainMenu();
     }
 
     public void Exit()

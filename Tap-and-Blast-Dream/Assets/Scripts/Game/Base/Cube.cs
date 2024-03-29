@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class Cube : BoardEntity, IAnimatable, IFallible, IBlastable
 {
+    public CubeTypes Type {private set; get;}
+
+    public void SetType(int cubeType) {
+
+        Type = (CubeTypes) cubeType;
+
+    }
+
+    //TODO: set sprite according to type
+    private void SetSprite() {
+
+    }
+
+
     public void Animate()
     {
         throw new System.NotImplementedException();
@@ -18,4 +32,6 @@ public class Cube : BoardEntity, IAnimatable, IFallible, IBlastable
     {
         throw new System.NotImplementedException();
     }
+
+
 }

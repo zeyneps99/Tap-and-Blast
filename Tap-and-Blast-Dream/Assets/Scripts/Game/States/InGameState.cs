@@ -6,7 +6,7 @@ public class InGameState : IGameState
 {
     public void Enter()
     {
-        GameLogic.Instance.StartGame();
+        GameManager.Instance.StartGame();
     }
 
     public void Exit()

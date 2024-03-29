@@ -1,6 +1,5 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T instance = null;
@@ -12,26 +11,23 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         get
         {
-            if (instance == null)
+            lock (padlock)
             {
-                lock (padlock)
+                if (instance == null)
                 {
+                    instance = FindObjectOfType<T>();
+
                     if (instance == null)
                     {
-                        if (instance == null)
-                        {
-                            GameObject go = new();
-                            instance = go.AddComponent<T>();
-                            go.name = typeof(T).Name;
-                            DontDestroyOnLoad(instance.gameObject);
-                        }
-                      
+                        GameObject singletonObject = new GameObject();
+                        instance = singletonObject.AddComponent<T>();
+                        singletonObject.name = typeof(T).ToString() + " (Singleton)";
+                        DontDestroyOnLoad(singletonObject);
                     }
                 }
+
+                return instance;
             }
-            return instance;
         }
     }
-
-
 }

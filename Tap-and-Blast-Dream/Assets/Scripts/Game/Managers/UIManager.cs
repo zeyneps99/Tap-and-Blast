@@ -16,20 +16,7 @@ public class UIManager : Singleton<UIManager>
     {
         GetPrefabs();
     }
-    private void OnEnable() {
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded += HandleSceneChange;
-    }
-
-    private void OnDisable() {
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= HandleSceneChange;
-    }
-
-    private void HandleSceneChange(Scene scene, LoadSceneMode _)
-    {
-        int sceneType = (int) Utils.GetSceneType(scene.name);
-        DisplayUI(sceneType);
-    }
-
+ 
     private void GetPrefabs() {
         _mainMenuUI = Resources.Load<MainMenuUI>(_resourcePath + "MainMenuUI");
     }
@@ -46,6 +33,10 @@ public class UIManager : Singleton<UIManager>
             DisplayMainUI();
             break;
 
+            case SceneTypes.GameScene:
+            DisplayGameUI();
+            break;
+
             default:
             break;
         }
@@ -57,6 +48,11 @@ public class UIManager : Singleton<UIManager>
             _mainMenuUI = Instantiate(_mainMenuUI, _canvas.transform);
             _mainMenuUI.Init();
         }
+    }
+
+    //TODO
+    private void DisplayGameUI() {
+
     }
 
 }

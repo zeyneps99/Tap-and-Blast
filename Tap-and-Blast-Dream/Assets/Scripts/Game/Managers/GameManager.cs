@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,10 +9,17 @@ public class GameManager : Singleton<GameManager>
     private GameStateManager _gameStateManager;
     private bool _isApplicationRunning;
     private bool _isInGame = false;
+
+    private UIManager _uiManager;
+    private SceneManager _sceneManager;
+
     void Awake()
     {
         DontDestroyOnLoad(this);
-         _gameStateManager = new GameStateManager();
+        _gameStateManager = new GameStateManager();
+        _uiManager = UIManager.Instance;
+        _sceneManager = SceneManager.Instance;
+
     }
 
     private void Start() {
@@ -23,20 +31,38 @@ public class GameManager : Singleton<GameManager>
 
     private void OnEnable() {
         
-        Events.GameEvents.OnPlay += StartGame;
+        Events.GameEvents.OnPlay += PlayClicked;
     }
 
     private void OnDisable() {
-        Events.GameEvents.OnPlay -= StartGame;
+        Events.GameEvents.OnPlay -= PlayClicked;
     }
 
-    private void StartGame() {
+    public bool IsInGame() {
+        return _isInGame;
+    }
+
+    public void StartMainMenu() {
+      _sceneManager.LoadScene((int) SceneTypes.MainScene, () => { _uiManager.DisplayUI((int) SceneTypes.MainScene);});
+    }
+
+    private void PlayClicked() {
         if (_isApplicationRunning && !_isInGame) {
-            _gameStateManager.SwitchState(new InGameState());
             _isInGame = true;
+            _gameStateManager.SwitchState(new InGameState());
         }
     }
 
+    public void StartGame() {
+
+        if(_isApplicationRunning && _isInGame) {
+            _sceneManager.LoadScene((int) SceneTypes.GameScene, () => 
+            { 
+                GameLogic.Instance.PrepareGame();
+                _uiManager.DisplayUI((int) SceneTypes.GameScene);});
+
+        }
+    }
 
 
 }

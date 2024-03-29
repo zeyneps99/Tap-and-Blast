@@ -41,7 +41,6 @@ public class MainMenuUI : MonoBehaviour
     }
 
     private void Play() {
-
         Events.GameEvents.OnPlay?.Invoke();
     }
     

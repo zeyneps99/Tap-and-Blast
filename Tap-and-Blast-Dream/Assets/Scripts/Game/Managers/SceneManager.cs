@@ -1,14 +1,20 @@
+using System;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 public class SceneManager : Singleton<SceneManager>
 {
-     public void LoadScene(int sceneType)
+     public void LoadScene(int sceneType, Action onComplete = null)
     {
-        string sceneName = SceneTypeToSceneName(sceneType);
+       string sceneName = SceneTypeToSceneName(sceneType);
         if (!string.IsNullOrEmpty(sceneName))
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+            if (onComplete != null) {
+                UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, mode) => {
+                    onComplete?.Invoke(); 
+            };
+            }
+            UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single); 
         }
         else
         {
@@ -20,7 +26,6 @@ public class SceneManager : Singleton<SceneManager>
     {
        return ((SceneTypes)sceneType).ToString();  
     }
-
 
 
 }
