@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,7 +30,7 @@ public class Board : MonoBehaviour
 
         BoardEntity[] entityArr = GetGridItems(grid);
         
-      if (_container == null)
+      if (_container == null || entityArr == null)
         {
             return;
         }
@@ -79,14 +80,18 @@ public class Board : MonoBehaviour
     }
 
     private BoardEntity[] GetGridItems(string[] grid) {
-        BoardEntity[] arr = new BoardEntity[grid.Length];
-        for(int i = 0; i < grid.Length; i++) {
 
-           BoardEntity entity = StringToEntity(grid[i]);
-           if (entity != null) {
-            arr[i] = entity;
-           }
-        }
+      if (grid == null || grid.Length == 0) {
+        return null;
+      }
+        BoardEntity[] arr = new BoardEntity[grid.Length];
+        // for(int i = 0; i < grid.Length; i++) {
+
+        //    BoardEntity entity = StringToEntity(grid[i]);
+        //    if (entity != null) {
+        //     arr[i] = entity;
+        //    }
+        // }
         return arr;
     }
 

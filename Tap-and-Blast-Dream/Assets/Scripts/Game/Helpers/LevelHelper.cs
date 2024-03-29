@@ -29,7 +29,7 @@ public class LevelHelper : MonoBehaviour
             Board = Instantiate(Board, _canvas.transform);
          }
       }
-         //Board.Set(level.grid_width, level.grid_height, level.grid);
+         Board?.Set(level.grid_width, level.grid_height, level.grid);
 
       
    }
