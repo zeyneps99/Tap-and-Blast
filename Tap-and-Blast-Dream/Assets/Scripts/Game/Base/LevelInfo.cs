@@ -4,10 +4,10 @@ using UnityEngine;
 
 public struct LevelInfo 
 {
-    public Goal Goal {get; set;}
+    public Dictionary<ObstacleTypes, int> Goal;
     public int MoveCount {get; set;}
 
-    public LevelInfo(Goal goal, int moveCount) {
+    public LevelInfo(Dictionary<ObstacleTypes,int> goal, int moveCount) {
         Goal = goal;
         MoveCount = moveCount;
     }

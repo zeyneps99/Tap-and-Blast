@@ -76,16 +76,24 @@ public class BoardEntityFactory
 
     public Stone GetStone() {
         Stone stone = _stonePool.Get();
+        if (stone != null) {
+            stone.SetType((int) ObstacleTypes.Stone);
+        }
         return stone;
     }
     public Box GetBox() {
-        
         Box box = _boxPool.Get();  
+        if (box != null) {
+            box.SetType((int) ObstacleTypes.Box);
+        }
         return box;
     }
 
    public Vase GetVase() {
         Vase vase = _vasePool.Get();   
+        if (vase != null) {
+            vase.SetType((int) ObstacleTypes.Vase);
+        }
         return vase;
     }
 
@@ -98,7 +106,6 @@ public class BoardEntityFactory
         else if(entityToReturn.TryGetComponent(out TNT tnt) ) {
             _TNTPool.Put(tnt);
         }
-        
         else if(entityToReturn.TryGetComponent(out Box box) ) {
             _boxPool.Put(box);
         }       

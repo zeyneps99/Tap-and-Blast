@@ -10,12 +10,12 @@ public class LevelHelper : MonoBehaviour
    private Board _board;
    private Level _level;
    private LevelInfo _levelInfo;
+
    private static string _boardPath = "Prefabs/Board/";
    private Canvas _canvas;
 
 
    public void GenerateLevel(Level level) {
-      LevelInfo levelInfo = new();
       _level = level;
       if (_canvas == null) {
          _canvas = FindObjectOfType<Canvas>();
@@ -32,33 +32,23 @@ public class LevelHelper : MonoBehaviour
    public LevelInfo GetLevelInfo() {
       return new LevelInfo(GetGoal(_board), _level.move_count);
    }
-   private Goal GetGoal(Board board) {
-      Goal goal = new Goal();
+   private Dictionary<ObstacleTypes, int> GetGoal(Board board) {
       List<Obstacle> ObstacleList = board.GetObstacles();
+      Dictionary<ObstacleTypes, int> goal = new Dictionary<ObstacleTypes, int>
+      {
+          { ObstacleTypes.Box, 0 },
+          { ObstacleTypes.Vase, 0 },
+          { ObstacleTypes.Stone, 0 }
+      };
+
       for(int i = 0; i < ObstacleList.Count; i++) {
          ObstacleTypes type = ObstacleList[i].Type;
-         if (type == ObstacleTypes.Vase) {
-            goal.Vase++;
-         }
-         else if (type == ObstacleTypes.Box) {
-            goal.Box++;
-         }
-         else if (type == ObstacleTypes.Stone) {
-            goal.Stone++;
+         if (type != ObstacleTypes.None) {
+            goal[type]++;
          }
       }
       return goal;
    }
-
-
-
-
-//    public int GetLevelInfo() {
-
-
-
-//    }
-
 
 
 }

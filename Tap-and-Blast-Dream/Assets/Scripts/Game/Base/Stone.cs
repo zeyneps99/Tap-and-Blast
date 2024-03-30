@@ -4,7 +4,5 @@ using UnityEngine;
 
 public class Stone : Obstacle
 {
-    private void Awake() {
-        Type = ObstacleTypes.Stone;
-    }
+
 }

@@ -5,17 +5,56 @@ using UnityEngine;
 
 public class GameUI : MonoBehaviour
 {
-    private LevelInfo _levelInfo;
     [SerializeField] private TextMeshProUGUI _moveCount;
+    [SerializeField] private Transform _goalContainer;
+    [SerializeField] private GameObject _goalItemPrefab;
+
+    private Dictionary<ObstacleTypes, GoalItem> _goalItems;
+
+    private LevelInfo _levelInfo;
+
     public void Init(LevelInfo levelInfo) {
         _levelInfo = levelInfo;
+        _goalItems = new Dictionary<ObstacleTypes, GoalItem>();
         SetMoves(levelInfo.MoveCount);
+        SetGoal(levelInfo.Goal);
     }
 
     private void SetMoves(int moveCount) {
         if(_moveCount != null) {
             _moveCount.text = moveCount.ToString();
         }
+    }
+
+    private void SetGoal(Dictionary<ObstacleTypes, int> goal) {
+        if (goal == null || _goalItems == null) {
+            return;
+        }
+
+        foreach(ObstacleTypes type in goal.Keys) {
+            if (goal[type] <= 0 && _goalItems.ContainsKeySafe(type)) {
+                if (_goalItems[type] != null) {
+                    DestroyImmediate(_goalItems[type].gameObject);
+                }
+                _goalItems.Remove(type);
+            }
+
+            if (goal[type] > 0 && !_goalItems.ContainsKeySafe(type)) {
+                GameObject go = Instantiate(_goalItemPrefab, _goalContainer);
+                if (go.TryGetComponent(out GoalItem item)) {
+                    item.Set((int) type, goal[type]);
+                     _goalItems.Add(type, item);
+                }
+            }
+            else if (goal[type] > 0) {
+                _goalItems[type].Set((int) type, goal[type]);
+            }
+        }
+
+
+      
+
+        
     }
 
    

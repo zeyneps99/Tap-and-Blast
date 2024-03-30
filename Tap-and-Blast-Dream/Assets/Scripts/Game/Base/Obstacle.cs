@@ -14,4 +14,8 @@ public class Obstacle : BoardEntity, IAnimatable, IDamageable
     {
         throw new System.NotImplementedException();
     }
-}
+
+    public void SetType(int type) {
+        Type = (ObstacleTypes) type;
+    }
+ }
