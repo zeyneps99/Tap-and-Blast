@@ -82,7 +82,6 @@ public class Board : MonoBehaviour
                 }
                 _factory.Return(sampleCube);
             }
-
         }
     }
 
