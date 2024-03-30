@@ -18,7 +18,7 @@ public class Board : MonoBehaviour
 
 
     private void Awake() {
-        _factory = new BoardEntityFactory(transform);
+      _factory = new BoardEntityFactory(transform);
     }
 
    public void Set(int width, int height, string[] grid) {
@@ -38,7 +38,7 @@ public class Board : MonoBehaviour
 ;           return;
         }
 
-      if(entityArr == null) {
+      if(entityArr == null || entityArr.Length <= 0) {
         return;
       }
         SetGridLayout(_container);
@@ -75,6 +75,7 @@ public class Board : MonoBehaviour
             layout.constraintCount = Height;
 
             var sampleCube =_factory.GetCube(1);
+            sampleCube.name = "sampleCube";
             if (sampleCube != null && sampleCube.gameObject != null) {
                 if (sampleCube.TryGetComponent<RectTransform>(out var cubeRT))
                 {
@@ -82,8 +83,9 @@ public class Board : MonoBehaviour
                     layout.cellSize = new Vector2(.75f, .75f)* _itemWidth;
                     GenerateGrid(layout.cellSize.x);
                 }
-                _factory.Return(sampleCube);
             }
+            _factory.Return(sampleCube);
+
         }
     }
 
@@ -111,7 +113,6 @@ public class Board : MonoBehaviour
         return arr;
     }
 
-    //TODO: add remaining types  
     private BoardEntity StringToEntity(string str) {
 
       if (_factory == null) {
@@ -136,7 +137,15 @@ public class Board : MonoBehaviour
       if(str.Equals("tnt")) {
         return _factory.GetTNT();
       }
-      //TODO: change for others
+      if (str.Equals("bo")) {
+        return _factory.GetBox();
+      }
+      if(str.Equals("s")){
+        return _factory.GetStone();
+      }
+      if(str.Equals("v")){
+        return _factory.GetVase();
+      }
       else {
         return _factory.GetCube(Random.Range(1, 5));
       }

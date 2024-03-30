@@ -10,13 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 8393280801297791010}
   - component: {fileID: 5529522662356666670}
-  - component: {fileID: 3496894025695833164}
   - component: {fileID: 6927586031208917849}
   - component: {fileID: 1590489388645251182}
   - component: {fileID: 7508175580828576533}
   - component: {fileID: 2661976499997821053}
+  - component: {fileID: 998671698972328660}
   m_Layer: 5
-  m_Name: TNT
+  m_Name: Vase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 142, y: 142}
+  m_SizeDelta: {x: 142, y: 162}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5529522662356666670
 MonoBehaviour:
@@ -53,19 +53,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f85255c5d762b42ab8b5229e47db9a89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3496894025695833164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5078905281838154216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdb7f848062e24c3485170894b9aab71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Position: {x: 0, y: -1}
 --- !u!114 &6927586031208917849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,7 +114,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 44528688deab047299d914320b56c40e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a300fd3bca8d843fb91ed6a85a12ec2e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -137,3 +124,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &998671698972328660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5078905281838154216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dada3ab1d430149cd9b0e9201b67e88d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Position: {x: 0, y: -1}

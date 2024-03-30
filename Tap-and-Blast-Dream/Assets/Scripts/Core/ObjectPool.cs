@@ -7,7 +7,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
     private GameObject _objectPrefab;
     private Queue<T> _pool = new Queue<T>();
     private Transform _parent;
-    public const int _amount = 10;
+    public const int _amount = 5;
 
 
     public ObjectPool(GameObject go, Transform t)
@@ -36,8 +36,11 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
 
     public void Put(T obj)
     {
+        if (obj != null){
         obj.gameObject.SetActive(false);
         _pool.Enqueue(obj);
+        }
+
     }
 
     public void Add(int count)
