@@ -14,7 +14,6 @@ public class FileHelper {
         var file = Resources.Load<TextAsset>(_path + _filePrefix + (levelNum < 10 ? "0" : "") + levelNum);
         if (file != null) {
             level = JsonUtility.FromJson<Level>(file.text);
-            Debug.Log("level num " + level.level_number);
         }
         return level;
     }

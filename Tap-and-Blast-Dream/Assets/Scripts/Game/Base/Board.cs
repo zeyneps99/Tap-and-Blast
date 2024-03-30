@@ -11,6 +11,7 @@ public class Board : MonoBehaviour
     public int Height {get; private set;}
 
     [SerializeField] private GameObject _container;
+    [SerializeField] private RectTransform _grid;
 
     private BoardEntity[,] _items;
     private BoardEntityFactory _factory;
@@ -78,10 +79,19 @@ public class Board : MonoBehaviour
                 if (sampleCube.TryGetComponent<RectTransform>(out var cubeRT))
                 {
                     float _itemWidth = cubeRT.rect.width;
-                    layout.cellSize = Vector2.one * _itemWidth;
+                    layout.cellSize = new Vector2(.75f, .75f)* _itemWidth;
+                    GenerateGrid(layout.cellSize.x);
                 }
                 _factory.Return(sampleCube);
             }
+        }
+    }
+
+    private void GenerateGrid(float cellSize)
+    {
+        if (_grid != null)
+        {
+            _grid.sizeDelta = new Vector2(Width + .25f, Height + .25f) * cellSize;
         }
     }
 
