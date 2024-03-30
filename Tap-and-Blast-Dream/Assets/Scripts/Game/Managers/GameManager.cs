@@ -6,36 +6,31 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    private GameStateManager _gameStateManager;
     private bool _isApplicationRunning;
     private bool _isInGame = false;
 
-    private UIManager _uiManager;
     private SceneManager _sceneManager;
 
     void Awake()
     {
         DontDestroyOnLoad(this);
-        _gameStateManager = new GameStateManager();
-        _uiManager = UIManager.Instance;
         _sceneManager = SceneManager.Instance;
-
     }
 
     private void Start() {
         if (!_isApplicationRunning) {
-            _gameStateManager.SwitchState(new IdleState());
+            StartMainMenu();
             _isApplicationRunning = true;
         }
     }
 
     private void OnEnable() {
         
-        Events.GameEvents.OnPlay += PlayClicked;
+        Events.GameEvents.OnPlay += PlayGame;
     }
 
     private void OnDisable() {
-        Events.GameEvents.OnPlay -= PlayClicked;
+        Events.GameEvents.OnPlay -= PlayGame;
     }
 
     public bool IsInGame() {
@@ -43,26 +38,20 @@ public class GameManager : Singleton<GameManager>
     }
 
     public void StartMainMenu() {
-      _sceneManager.LoadScene((int) SceneTypes.MainScene, () => { _uiManager.DisplayUI((int) SceneTypes.MainScene);});
+      _sceneManager.LoadScene((int) SceneTypes.MainScene, () => { Events.GameEvents.OnMainMenuStarted?.Invoke();});
     }
 
-    private void PlayClicked() {
+    private void PlayGame() {
         if (_isApplicationRunning && !_isInGame) {
             _isInGame = true;
-            _gameStateManager.SwitchState(new InGameState());
-        }
-    }
-
-    public void StartGame() {
-
-        if(_isApplicationRunning && _isInGame) {
-            _sceneManager.LoadScene((int) SceneTypes.GameScene, () => 
-            { 
+             _sceneManager.LoadScene((int) SceneTypes.GameScene, () => 
+             { 
                 GameLogic.Instance.PrepareGame();
-                _uiManager.DisplayUI((int) SceneTypes.GameScene);});
-
+             });
+           // _gameStateManager.SwitchState(new InGameState());
         }
     }
 
+    
 
 }

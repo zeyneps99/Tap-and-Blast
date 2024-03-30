@@ -152,6 +152,16 @@ public class Board : MonoBehaviour
         
     }
 
+    public List<Obstacle> GetObstacles() {
+
+      List<Obstacle> obstacles = new List<Obstacle>();
+      foreach(BoardEntity entity in _items) {
+        if (entity.TryGetComponent(out Obstacle obstacle)) {
+          obstacles.Add(obstacle);
+        }
+      }
+      return obstacles;
+    }
 
     }
 

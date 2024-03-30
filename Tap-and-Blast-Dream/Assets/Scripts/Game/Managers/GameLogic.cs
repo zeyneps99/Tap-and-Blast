@@ -7,7 +7,6 @@ public class GameLogic : Singleton<GameLogic>
 {
     private LevelHelper _levelHelper;
     private FileHelper  _fileHelper;
-
     private void Awake() {
         _fileHelper = new FileHelper();
         GameObject go = new();
@@ -16,7 +15,13 @@ public class GameLogic : Singleton<GameLogic>
     }
     public void PrepareGame() {
         Level level = _fileHelper.GetCurrentLevel();
-        _levelHelper.GenerateBoardForLevel(level);
+        _levelHelper.GenerateLevel(level);
+        Events.GameEvents.OnLevelGenerated?.Invoke(GetLevelInfo());
+
+    }
+
+    private LevelInfo GetLevelInfo() {
+       return _levelHelper.GetLevelInfo();
     }
 
   

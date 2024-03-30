@@ -10,49 +10,44 @@ public class UIManager : Singleton<UIManager>
 {
     private static string _resourcePath = "Prefabs/UI/";
     private MainMenuUI _mainMenuUI;
+    private GameUI _gameUI;
     private Canvas _canvas;
 
     void Awake()
     {
+        DontDestroyOnLoad(this);
         GetPrefabs();
     }
  
     private void GetPrefabs() {
         _mainMenuUI = Resources.Load<MainMenuUI>(_resourcePath + "MainMenuUI");
+        _gameUI = Resources.Load<GameUI>(_resourcePath + "GameUI");
     }
 
+    private void OnEnable() {
+        Events.GameEvents.OnMainMenuStarted += DisplayMainUI;
+        Events.GameEvents.OnLevelGenerated += DisplayGameUI;
+    }
+
+    private void OnDisable() {
+        Events.GameEvents.OnMainMenuStarted -= DisplayMainUI;
+        Events.GameEvents.OnLevelGenerated -= DisplayGameUI;
+    }
     
-    public void DisplayUI(int scene) {
-
+    public void DisplayMainUI() {
         _canvas = FindObjectOfType<Canvas>();
-
-        SceneTypes type = (SceneTypes) scene;
-
-        switch(type) {
-            case SceneTypes.MainScene:
-            DisplayMainUI();
-            break;
-
-            case SceneTypes.GameScene:
-            DisplayGameUI();
-            break;
-
-            default:
-            break;
-        }
-    }
-
-    private void DisplayMainUI() {
-
         if (_mainMenuUI != null && _canvas != null) {
             _mainMenuUI = Instantiate(_mainMenuUI, _canvas.transform);
             _mainMenuUI.Init();
         }
     }
 
-    //TODO
-    private void DisplayGameUI() {
-
+    public void DisplayGameUI(LevelInfo info) {
+        _canvas = FindObjectOfType<Canvas>();
+        if (_gameUI != null && _canvas != null) {
+            _gameUI = Instantiate(_gameUI, _canvas.transform);
+            _gameUI.Init(info);
+        }
     }
 
 }

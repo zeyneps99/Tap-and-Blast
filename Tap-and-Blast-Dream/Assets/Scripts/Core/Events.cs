@@ -11,6 +11,8 @@ public static partial class Events
     }
     public static class GameEvents
     {
+        public static Action OnMainMenuStarted;
         public static Action OnPlay;
+        public static Action<LevelInfo> OnLevelGenerated;
     }
 }
