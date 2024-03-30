@@ -14,5 +14,6 @@ public static partial class Events
         public static Action OnMainMenuStarted;
         public static Action OnPlay;
         public static Action<LevelInfo> OnLevelGenerated;
+        public static Action<Blastable> OnPlayerInput;
     }
 }

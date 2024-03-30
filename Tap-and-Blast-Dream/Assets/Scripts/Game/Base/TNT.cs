@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TNT : BoardEntity, IAnimatable, IFallible, IBlastable
+public class TNT : Blastable, IAnimatable, IFallible
 {
     public void Animate()
     {
@@ -18,5 +18,11 @@ public class TNT : BoardEntity, IAnimatable, IFallible, IBlastable
     public void Fall()
     {
         throw new System.NotImplementedException();
+    }
+
+    // TODO
+    public override bool CanBlastNeighbor(Blastable neighbor)
+    {
+        return (neighbor.TryGetComponent(out TNT _) || neighbor.TryGetComponent(out Cube _));
     }
 }

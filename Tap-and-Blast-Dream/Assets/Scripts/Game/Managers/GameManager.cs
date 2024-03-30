@@ -27,10 +27,12 @@ public class GameManager : Singleton<GameManager>
     private void OnEnable() {
         
         Events.GameEvents.OnPlay += PlayGame;
+        Events.GameEvents.OnPlayerInput += RegisterBlastRequest;
     }
 
     private void OnDisable() {
         Events.GameEvents.OnPlay -= PlayGame;
+        Events.GameEvents.OnPlayerInput -= RegisterBlastRequest;
     }
 
     public bool IsInGame() {
@@ -50,6 +52,10 @@ public class GameManager : Singleton<GameManager>
              });
            // _gameStateManager.SwitchState(new InGameState());
         }
+    }
+
+    private void RegisterBlastRequest(Blastable blastable) {
+        GameLogic.Instance.LookForBlast(blastable);
     }
 
     

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Commander))]
-public class Entity : MonoBehaviour, IEntity
+public class Entity : MonoBehaviour
 {
     protected Commander _commander;
 

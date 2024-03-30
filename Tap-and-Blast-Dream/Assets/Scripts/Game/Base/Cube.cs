@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class Cube : BoardEntity, IAnimatable, IFallible, IBlastable
+public class Cube : Blastable, IAnimatable, IFallible
 {
     public CubeTypes Type {private set; get;}  
     private Image _image; 
@@ -42,6 +43,12 @@ public class Cube : BoardEntity, IAnimatable, IFallible, IBlastable
         }
     }
 
+    public void Tap() {
+        TapCommand tapCommand = new TapCommand(this);
+        _commander.ExecuteCommand(tapCommand);
+    }
+    
+
     public void Animate()
     {
         throw new System.NotImplementedException();
@@ -57,5 +64,9 @@ public class Cube : BoardEntity, IAnimatable, IFallible, IBlastable
         throw new System.NotImplementedException();
     }
 
+    public override bool CanBlastNeighbor(Blastable neighbor)
+    {
+        return (neighbor.TryGetComponent(out Cube cube) && cube.Type == Type);
+    }
 
 }

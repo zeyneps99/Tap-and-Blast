@@ -50,5 +50,7 @@ public class LevelHelper : MonoBehaviour
       return goal;
    }
 
-
+   public Board GetBoard() {
+      return _board;
+   }
 }

@@ -13,7 +13,7 @@ public class Board : MonoBehaviour
     [SerializeField] private GameObject _container;
     [SerializeField] private RectTransform _grid;
 
-    private BoardEntity[,] _items;
+    public BoardEntity[,] Items;
     private BoardEntityFactory _factory;
 
 
@@ -24,7 +24,7 @@ public class Board : MonoBehaviour
    public void Set(int width, int height, string[] grid) {
     Width = width;
     Height = height;
-    _items = new BoardEntity[Width, Height];
+    Items = new BoardEntity[Width, Height];
     SetBoard(grid);
    }
 
@@ -56,7 +56,7 @@ public class Board : MonoBehaviour
                     entity.transform.SetParent(_container.transform);
                     entity.transform.localScale = Vector2.one;
                     entity.Position = new Vector2Int(i, j);
-                    _items[i, j] = entity;
+                    Items[i, j] = entity;
                     count++;
                 } else
                 {
@@ -155,7 +155,7 @@ public class Board : MonoBehaviour
     public List<Obstacle> GetObstacles() {
 
       List<Obstacle> obstacles = new List<Obstacle>();
-      foreach(BoardEntity entity in _items) {
+      foreach(BoardEntity entity in Items) {
         if (entity.TryGetComponent(out Obstacle obstacle)) {
           obstacles.Add(obstacle);
         }
