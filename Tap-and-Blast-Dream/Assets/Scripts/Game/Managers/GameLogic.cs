@@ -28,9 +28,26 @@ public class GameLogic : Singleton<GameLogic>
     }
 
     public void LookForBlast(Blastable blastable) {
+        if(_levelHelper)
         if (_blastHelper != null && blastable != null) {
             _blastHelper.LookForBlast(blastable);
         }
     }
+
+    public void HandleBlast(List<Blastable> blastables) {
+        if (blastables == null || blastables.Count <= 0) {
+            return;
+        }
+        else {
+            //TODO
+            if (_levelHelper.IsLevelOver()) {
+                Debug.Log("Game over");
+            } else {
+                _levelHelper.BlastInLevel(blastables);
+            }
+        }
+    }
+
+    
 
 }

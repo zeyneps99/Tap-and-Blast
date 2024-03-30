@@ -28,11 +28,15 @@ public class GameManager : Singleton<GameManager>
         
         Events.GameEvents.OnPlay += PlayGame;
         Events.GameEvents.OnPlayerInput += RegisterBlastRequest;
+        Events.GameEvents.OnBlast += PerformBlast;
     }
+
+
 
     private void OnDisable() {
         Events.GameEvents.OnPlay -= PlayGame;
         Events.GameEvents.OnPlayerInput -= RegisterBlastRequest;
+        Events.GameEvents.OnBlast -= PerformBlast;
     }
 
     public bool IsInGame() {
@@ -50,7 +54,6 @@ public class GameManager : Singleton<GameManager>
              { 
                 GameLogic.Instance.PrepareGame();
              });
-           // _gameStateManager.SwitchState(new InGameState());
         }
     }
 
@@ -58,6 +61,11 @@ public class GameManager : Singleton<GameManager>
         GameLogic.Instance.LookForBlast(blastable);
     }
 
+    private void PerformBlast(List<Blastable> list)
+    {
+        GameLogic.Instance.HandleBlast(list);
+        
+    }
     
 
 }

@@ -5,10 +5,6 @@ using UnityEngine;
 public class Obstacle : BoardEntity, IAnimatable, IDamageable
 {
     public ObstacleTypes Type {get; protected set;}
-    public void Animate()
-    {
-        throw new System.NotImplementedException();
-    }
 
     public void TakeDamage()
     {
@@ -18,4 +14,8 @@ public class Obstacle : BoardEntity, IAnimatable, IDamageable
     public void SetType(int type) {
         Type = (ObstacleTypes) type;
     }
- }
+    public void Animate()
+    {
+        throw new System.NotImplementedException();
+    }
+}

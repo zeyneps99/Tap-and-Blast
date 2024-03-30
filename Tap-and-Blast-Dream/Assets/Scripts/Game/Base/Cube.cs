@@ -11,6 +11,8 @@ public class Cube : Blastable, IAnimatable, IFallible
     public CubeTypes Type {private set; get;}  
     private Image _image; 
 
+    [SerializeField] private ParticleSystem _blastParticles;
+
     private string _spritePath = "Sprites/Cube/DefaultState/";
     
     public void SetType(int cubeType) {
@@ -47,17 +49,6 @@ public class Cube : Blastable, IAnimatable, IFallible
         TapCommand tapCommand = new TapCommand(this);
         _commander.ExecuteCommand(tapCommand);
     }
-    
-
-    public void Animate()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Blast()
-    {
-        throw new System.NotImplementedException();
-    }
 
     public void Fall()
     {
@@ -69,4 +60,8 @@ public class Cube : Blastable, IAnimatable, IFallible
         return (neighbor.TryGetComponent(out Cube cube) && cube.Type == Type);
     }
 
+    public void Animate()
+    {
+        throw new System.NotImplementedException();
+    }
 }

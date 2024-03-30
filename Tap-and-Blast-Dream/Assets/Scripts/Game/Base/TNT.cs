@@ -5,16 +5,6 @@ using UnityEngine;
 
 public class TNT : Blastable, IAnimatable, IFallible
 {
-    public void Animate()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Blast()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public void Fall()
     {
         throw new System.NotImplementedException();
@@ -24,5 +14,10 @@ public class TNT : Blastable, IAnimatable, IFallible
     public override bool CanBlastNeighbor(Blastable neighbor)
     {
         return (neighbor.TryGetComponent(out TNT _) || neighbor.TryGetComponent(out Cube _));
+    }
+
+    public void Animate()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -66,6 +66,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Position: {x: 0, y: -1}
+  _blastParticles: {fileID: 0}
 --- !u!114 &4843120558448832026
 MonoBehaviour:
   m_ObjectHideFlags: 0

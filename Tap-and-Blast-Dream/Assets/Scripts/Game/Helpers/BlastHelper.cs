@@ -66,10 +66,7 @@ public class BlastHelper : MonoBehaviour
 
     private void PerformMatch()
     {
-       foreach(var blastable in _blastList)
-        {
-            Debug.Log(blastable.name + " matched");
-        }
+       Events.GameEvents.OnBlast?.Invoke(_blastList);
     }
 }
 

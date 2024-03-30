@@ -14,9 +14,16 @@ public class LevelHelper : MonoBehaviour
    private static string _boardPath = "Prefabs/Board/";
    private Canvas _canvas;
 
+   private  Dictionary<ObstacleTypes, int> _goalRemaining;
 
    public void GenerateLevel(Level level) {
       _level = level;
+      _goalRemaining  = new Dictionary<ObstacleTypes, int>
+      {
+          { ObstacleTypes.Box, 0 },
+          { ObstacleTypes.Vase, 0 },
+          { ObstacleTypes.Stone, 0 }
+      };
       if (_canvas == null) {
          _canvas = FindObjectOfType<Canvas>();
       }
@@ -26,6 +33,7 @@ public class LevelHelper : MonoBehaviour
       }
       if (_board != null) {
          _board.Set(level.grid_width, level.grid_height, level.grid);
+         _board.Enable(true);
       }
    }
 
@@ -34,23 +42,32 @@ public class LevelHelper : MonoBehaviour
    }
    private Dictionary<ObstacleTypes, int> GetGoal(Board board) {
       List<Obstacle> ObstacleList = board.GetObstacles();
-      Dictionary<ObstacleTypes, int> goal = new Dictionary<ObstacleTypes, int>
-      {
-          { ObstacleTypes.Box, 0 },
-          { ObstacleTypes.Vase, 0 },
-          { ObstacleTypes.Stone, 0 }
-      };
-
       for(int i = 0; i < ObstacleList.Count; i++) {
          ObstacleTypes type = ObstacleList[i].Type;
          if (type != ObstacleTypes.None) {
-            goal[type]++;
+            _goalRemaining[type]++;
          }
       }
-      return goal;
+      return _goalRemaining;
    }
+
 
    public Board GetBoard() {
       return _board;
+   }
+
+   public bool IsLevelOver() {
+      return (_level.move_count < 1 || _goalRemaining.Count < 1); 
+   }
+
+   //TODO: update goals
+   public void BlastInLevel(List<Blastable> blastables) {
+     _level.move_count--;
+     _board.Enable(false);
+     foreach(Blastable item in blastables){
+      item.Blast( );
+      _board.RemoveItemFromBoard(item);
+     }
+     //_board.Enable(true);
    }
 }

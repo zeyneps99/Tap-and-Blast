@@ -5,5 +5,4 @@ using UnityEngine;
 public interface IAnimatable 
 {
     public abstract void Animate();
-
 }

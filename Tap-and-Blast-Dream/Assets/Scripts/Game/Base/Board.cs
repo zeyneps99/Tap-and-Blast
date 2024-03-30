@@ -16,6 +16,8 @@ public class Board : MonoBehaviour
     public BoardEntity[,] Items;
     private BoardEntityFactory _factory;
 
+    private bool _isEnabled = false;
+
 
     private void Awake() {
       _factory = new BoardEntityFactory(transform);
@@ -161,6 +163,34 @@ public class Board : MonoBehaviour
         }
       }
       return obstacles;
+    }
+
+    public void Enable(bool isEnable) {
+      if (isEnable != IsEnabled()) {
+      _isEnabled = isEnable;
+      foreach(BoardEntity item in Items) {
+        if (item!= null && item.TryGetComponent(out Blastable blastable)) {
+          blastable.Enable(isEnable);
+        }
+      }
+       if (_container != null &&_container.TryGetComponent<GridLayoutGroup>(out var layout))
+        {
+          layout.enabled = isEnable;
+        }
+      }
+    }
+
+    public bool IsEnabled() {
+      return _isEnabled;
+    }
+
+
+    public void RemoveItemFromBoard(BoardEntity entity) {
+    if (Items[entity.Position.x, entity.Position.y] == entity) {
+        Items[entity.Position.x, entity.Position.y] = null;
+        _factory.Return(entity);
+    }
+
     }
 
     }
