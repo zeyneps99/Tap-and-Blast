@@ -33,7 +33,7 @@ public class LevelHelper : MonoBehaviour
       }
       if (_board != null) {
          _board.Set(level.grid_width, level.grid_height, level.grid);
-         _board.Enable(true);
+         //_board.Enable(true);
       }
    }
 
@@ -60,12 +60,15 @@ public class LevelHelper : MonoBehaviour
       return (_level.move_count < 1 || _goalRemaining.Count < 1); 
    }
 
+   //TODO
    public void HandleBlast(List<Blastable> list) {
-      _level.move_count--;
-     // _board.Enable(false);
-      
+      //call event to change move count
+      _board.Enable(false);
+      Vector2Int pos = Vector2Int.zero;
+
       foreach(Blastable item in list) {
          if (item.TryGetComponent(out IAnimatable animatable)) {
+            pos = item.GetPosition();
             animatable.Animate(() => { _board.RemoveItem(item);});
          } else {
             _board.RemoveItem(item);
@@ -73,5 +76,9 @@ public class LevelHelper : MonoBehaviour
       }
    }
    
+   public void FillEmptySpaces() {
+      _board.ReplaceItemsAfterBlast();
+      //_board.Enable(true);
+   }
 
 }

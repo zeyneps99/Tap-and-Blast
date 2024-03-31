@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Vase : Obstacle, IFallible
 {
-
-    public void Fall()
+    public void Fall(Vector2Int newPos)
     {
         throw new System.NotImplementedException();
     }

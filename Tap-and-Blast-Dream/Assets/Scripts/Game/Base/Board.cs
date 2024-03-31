@@ -63,12 +63,13 @@ public class Board : MonoBehaviour
                     count++;
                 } else
                 {
-                    Debug.LogWarning("Error in SetBoard: count excedes grid length");
+                  Debug.LogWarning("Error in SetBoard: count excedes grid length");
                 }
                
             }
 
-        }}
+        }
+        }
 
     private void SetGridLayout(GameObject container)
     {
@@ -88,7 +89,6 @@ public class Board : MonoBehaviour
                 }
             }
             _factory.Return(sampleCube);
-
         }
     }
 
@@ -197,11 +197,35 @@ public class Board : MonoBehaviour
           _factory.Return(entity);
         }
       }
+      Events.GameEvents.OnBlastRemoved?.Invoke();
     }
 
-  
+    public void ReplaceItemsAfterBlast() {
+      for(int j = 0; j < Height; j++) {
+        for(int i = 0; i < Width; i++) {
+          BoardEntity entity = Items[i,j];
+          if (entity == null) {
+            continue;
+          }
+          if (entity.TryGetComponent(out IFallible fallible)) {
+            Vector2Int bottomNeighborPos = new Vector2Int(i, j-1);
+            if (!IsIndexOutOfBounds(bottomNeighborPos)) {
+              if (Items[bottomNeighborPos.x, bottomNeighborPos.y] == null) {
+                fallible.Fall(bottomNeighborPos);
+                entity.Set(bottomNeighborPos, this);
+                Items[bottomNeighborPos.x, bottomNeighborPos.y] = entity;
+                entity.name = "Entity - " + bottomNeighborPos.x + " , " + bottomNeighborPos.y;
+              }
+          } 
+          }
+      }
+      }
 
-    
+    }
+
+    private bool IsIndexOutOfBounds(Vector2Int pos) {
+      return (pos.x < 0 || pos.x >= Width || pos.y < 0 || pos.y >= Height);
+    }
 
     }
 

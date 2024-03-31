@@ -60,11 +60,6 @@ public class Cube : Blastable, IAnimatable, IFallible
         }
     }
 
-    public void Fall()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override bool CanBlastNeighbor(Blastable neighbor)
     {
         return (neighbor.TryGetComponent(out Cube cube) && cube.Type == Type);
@@ -83,5 +78,10 @@ public class Cube : Blastable, IAnimatable, IFallible
         _blastParticles.Play();
         yield return new WaitUntil(() => !_blastParticles.isPlaying);
         onComplete?.Invoke();
+    }
+
+    public void Fall(Vector2Int newPos)
+    {
+        Debug.Log(name + " is falling");
     }
 }
