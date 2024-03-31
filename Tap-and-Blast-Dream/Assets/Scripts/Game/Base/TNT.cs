@@ -15,8 +15,7 @@ public class TNT : Blastable, IAnimatable, IFallible
     {
         return (neighbor.TryGetComponent(out TNT _) || neighbor.TryGetComponent(out Cube _));
     }
-
-    public void Animate()
+    public void Animate(Action onComplete = null)
     {
         throw new NotImplementedException();
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,8 +15,9 @@ public class Obstacle : BoardEntity, IAnimatable, IDamageable
     public void SetType(int type) {
         Type = (ObstacleTypes) type;
     }
-    public void Animate()
+
+    public void Animate(Action onComplete = null)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 }

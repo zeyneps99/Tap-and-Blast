@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -69,20 +70,18 @@ public class Cube : Blastable, IAnimatable, IFallible
         return (neighbor.TryGetComponent(out Cube cube) && cube.Type == Type);
     }
 
-    public void Animate()
+    public void Animate(Action onComplete)
     {
        // gameObject.SetActive(false);
         if(_blastParticles != null) {
             _image.enabled = false;
-            StartCoroutine(ParticleAnimationRoutine(_blastParticles));
+            StartCoroutine(ParticleAnimationRoutine(_blastParticles, onComplete));
         }
     }
 
-    private IEnumerator ParticleAnimationRoutine(ParticleSystem particles) {
-        particles.Play();
-         while (particles.isPlaying)
-        {
-            yield return null; 
-        }
+    private IEnumerator ParticleAnimationRoutine(ParticleSystem particles, Action onComplete = null) {
+        _blastParticles.Play();
+        yield return new WaitUntil(() => !_blastParticles.isPlaying);
+        onComplete?.Invoke();
     }
 }
