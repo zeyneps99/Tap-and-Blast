@@ -7,13 +7,12 @@ using UnityEngine.UI;
 [RequireComponent(typeof(EventTrigger))]
 public class Blastable : BoardEntity, IBlastable
 {
-    public void Blast()
+    public ParticleSystem Particles {get; set;}
+
+    public void TryBlast()
     {
-        Enable(false);
-        if(TryGetComponent(out LayoutElement lo)) {
-            lo.ignoreLayout = true;
-        }
-      
+        TapCommand tapCommand = new TapCommand(this);
+        _commander.ExecuteCommand(tapCommand);
     }
 
     public virtual bool CanBlastNeighbor(Blastable neighbor)
@@ -24,4 +23,6 @@ public class Blastable : BoardEntity, IBlastable
     public void Enable(bool isEnable) {
         GetComponent<EventTrigger>().enabled = isEnable;
     }
+
 }
+    

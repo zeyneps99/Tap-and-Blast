@@ -60,14 +60,16 @@ public class LevelHelper : MonoBehaviour
       return (_level.move_count < 1 || _goalRemaining.Count < 1); 
    }
 
-   //TODO: update goals
-   public void BlastInLevel(List<Blastable> blastables) {
-     _level.move_count--;
-     _board.Enable(false);
-     foreach(Blastable item in blastables){
-      item.Blast( );
-      _board.RemoveItemFromBoard(item);
-     }
-     //_board.Enable(true);
+   public void HandleBlast(List<Blastable> list) {
+      _level.move_count--;
+     // _board.Enable(false);
+      
+      foreach(Blastable item in list) {
+         if (item.TryGetComponent(out IAnimatable animatable)) {
+            animatable.Animate();
+         }
+        // _board.RemoveItem(item);
+      }
    }
+
 }

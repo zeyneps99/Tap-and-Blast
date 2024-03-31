@@ -5,6 +5,6 @@ using UnityEngine.EventSystems;
 
 public interface IBlastable
 {
-   public abstract void Blast();
+   public abstract void TryBlast();
    public abstract bool CanBlastNeighbor(Blastable neighbor);
 }

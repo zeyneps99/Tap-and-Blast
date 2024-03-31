@@ -8,16 +8,18 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class Cube : Blastable, IAnimatable, IFallible
 {
-    public CubeTypes Type {private set; get;}  
+    public CubeTypes Type {private set; get;}
     private Image _image; 
 
     [SerializeField] private ParticleSystem _blastParticles;
 
-    private string _spritePath = "Sprites/Cube/DefaultState/";
+    private static string _spritePath = "Sprites/Cube/DefaultState/";
+    private static string _matPath = "Materials/";
     
     public void SetType(int cubeType) {
         Type = (CubeTypes) cubeType;
         SetSprite(cubeType);
+        SetParticleMaterial(cubeType);
     }
 
     private void SetSprite(int type) {
@@ -26,6 +28,18 @@ public class Cube : Blastable, IAnimatable, IFallible
             _image = GetComponent<Image>();
             if (sprite != null && _image != null) {
                 _image.sprite = sprite;
+                _image.enabled = true;
+            }
+        }
+    }
+
+    private void SetParticleMaterial(int type) {
+        if ((CubeTypes) type!= CubeTypes.None) {
+            Material mat = Resources.Load<Material>(_matPath + GetSpriteName(type) + "Particles");
+            if (_blastParticles != null && mat != null) {
+                if (_blastParticles.TryGetComponent(out ParticleSystemRenderer renderer)) {
+                    renderer.material = mat;
+                }
             }
         }
     }
@@ -45,11 +59,6 @@ public class Cube : Blastable, IAnimatable, IFallible
         }
     }
 
-    public void Tap() {
-        TapCommand tapCommand = new TapCommand(this);
-        _commander.ExecuteCommand(tapCommand);
-    }
-
     public void Fall()
     {
         throw new System.NotImplementedException();
@@ -62,6 +71,18 @@ public class Cube : Blastable, IAnimatable, IFallible
 
     public void Animate()
     {
-        throw new System.NotImplementedException();
+       // gameObject.SetActive(false);
+        if(_blastParticles != null) {
+            _image.enabled = false;
+            StartCoroutine(ParticleAnimationRoutine(_blastParticles));
+        }
+    }
+
+    private IEnumerator ParticleAnimationRoutine(ParticleSystem particles) {
+        particles.Play();
+         while (particles.isPlaying)
+        {
+            yield return null; 
+        }
     }
 }

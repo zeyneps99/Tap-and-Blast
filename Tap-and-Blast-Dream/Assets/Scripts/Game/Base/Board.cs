@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -57,7 +58,7 @@ public class Board : MonoBehaviour
                     entity.name =  "Entity - " + i + " , " + j;
                     entity.transform.SetParent(_container.transform);
                     entity.transform.localScale = Vector2.one;
-                    entity.Position = new Vector2Int(i, j);
+                    entity.Set(new Vector2Int(i, j), this);
                     Items[i, j] = entity;
                     count++;
                 } else
@@ -184,14 +185,22 @@ public class Board : MonoBehaviour
       return _isEnabled;
     }
 
-
-    public void RemoveItemFromBoard(BoardEntity entity) {
-    if (Items[entity.Position.x, entity.Position.y] == entity) {
-        Items[entity.Position.x, entity.Position.y] = null;
-        _factory.Return(entity);
+    public void RemoveItem(BoardEntity entity) {
+      if (entity == null) {
+        return;
+      }
+      if (entity.GetBoard() == this) {
+        Vector2Int pos = entity.GetPosition();
+        if(Items[pos.x, pos.y] == entity) {
+          Items[pos.x, pos.y] = null;
+          entity.Clear();
+          _factory.Return(entity);
+        }
+      }
     }
 
-    }
+
+    
 
     }
 

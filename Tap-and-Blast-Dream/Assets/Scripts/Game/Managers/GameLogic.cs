@@ -43,7 +43,7 @@ public class GameLogic : Singleton<GameLogic>
             if (_levelHelper.IsLevelOver()) {
                 Debug.Log("Game over");
             } else {
-                _levelHelper.BlastInLevel(blastables);
+                _levelHelper.HandleBlast(blastables);
             }
         }
     }

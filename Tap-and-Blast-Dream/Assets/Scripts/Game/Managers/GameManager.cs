@@ -64,7 +64,6 @@ public class GameManager : Singleton<GameManager>
     private void PerformBlast(List<Blastable> list)
     {
         GameLogic.Instance.HandleBlast(list);
-        
     }
     
 
