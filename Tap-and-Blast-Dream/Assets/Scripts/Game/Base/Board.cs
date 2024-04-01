@@ -61,11 +61,8 @@ public class Board : MonoBehaviour
                 {
                     BoardEntity entity = entityArr[count];
                     entity.name =  "Entity - " + i + " , " + j;
-
-
                     entity.transform.SetParent(_container.transform, true);
                     entity.transform.localScale = Vector2.one;
-                    entity.Set(new Vector2Int(i, j), this);
                     StartCoroutine(CoWaitForPosition(entity));
                     Items[i, j] = entity;
                     count++;
@@ -86,7 +83,7 @@ private IEnumerator CoWaitForPosition(BoardEntity entity)
       yield return null;
     }
     yield return new WaitForEndOfFrame();
-    _gridToWorldPos.Add(entity.GetPosition(), entity.transform.position);
+    _gridToWorldPos.Add(GetPositionOfItem(entity), entity.transform.position);
 }
 
     private void SetGridLayout(GameObject container)
@@ -210,18 +207,22 @@ private IEnumerator CoWaitForPosition(BoardEntity entity)
       if (entity == null) {
         return;
       }
-      if (entity.GetBoard() == this) {
-        Vector2Int pos = entity.GetPosition();
+        Vector2Int pos = GetPositionOfItem(entity);
         if(Items[pos.x, pos.y] == entity) {
           Items[pos.x, pos.y] = null;
           entity.Clear();
           _factory.Return(entity);
-        }
+        
       }
       Events.GameEvents.OnBlastRemoved?.Invoke();
     }
 
     public void ReplaceItemsAfterBlast() {
+      MakeFalliblesFall();
+
+    }
+
+    private void MakeFalliblesFall() {
       for(int j = 0; j < Height; j++) {
         for(int i = 0; i < Width; i++) {
           BoardEntity entity = Items[i,j];
@@ -237,11 +238,20 @@ private IEnumerator CoWaitForPosition(BoardEntity entity)
               Vector2Int destinationPos = new Vector2Int(bottomNeighborPos.x, bottomNeighborPos.y + 1);
               Items[i, j] = null;
               Items[destinationPos.x, destinationPos.y] = entity;
-              entity.Set(destinationPos, this);
               entity.name = "Entity - " + destinationPos.x + " , " + destinationPos.y;
               fallible.Fall(GetWorldPosition(destinationPos));
             }
       }
+      }
+    }
+
+    private void ReplaceFallibles() {
+
+      for(int i=0; i < Height ; i ++) {
+        for (int j=0; j < Width; j++) {
+          BoardEntity entity = Items[i, j];
+
+        }
       }
 
     }
@@ -260,6 +270,21 @@ private IEnumerator CoWaitForPosition(BoardEntity entity)
       }
     }
 
+    public Vector2Int GetPositionOfItem(BoardEntity entity) {
+    
+    if (Items == null || Items.Length == 0) {
+      return Vector2Int.down;
+    }
+    for(int i=0; i < Width; i++) {
+      for(int j=0; j < Height; j++) {
+        BoardEntity item = Items[i,j];
+        if (item!= null && item==entity) {
+          return new Vector2Int(i,j);
+        }
+        }
+      }
+      return Vector2Int.down;
+    }
     
 
     }

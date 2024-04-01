@@ -66,7 +66,7 @@ public class LevelHelper : MonoBehaviour
 
       foreach(Blastable item in list) {
          if (item.TryGetComponent(out IAnimatable animatable)) {
-            pos = item.GetPosition();
+            pos = _board.GetPositionOfItem(item);
             animatable.Animate(() => { _board.RemoveItem(item);});
          } else {
             _board.RemoveItem(item);

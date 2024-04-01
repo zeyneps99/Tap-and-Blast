@@ -18,7 +18,8 @@ public class BlastHelper : MonoBehaviour
         _chosenBlastable = blastable;
         _visited = new bool[_board.Width, _board.Height];
         _blastList = new List<Blastable>();
-        DFS(_chosenBlastable.GetPosition().x, _chosenBlastable.GetPosition().y);
+        Vector2Int pos = _board.GetPositionOfItem(_chosenBlastable);
+        DFS(pos.x, pos.y);
         //TODO: change for TNT checks
         if (_blastList.Count >= 2)
         {
