@@ -51,11 +51,9 @@ public class LevelHelper : MonoBehaviour
       return _goalRemaining;
    }
 
-
    public Board GetBoard() {
       return _board;
    }
-
    public bool IsLevelOver() {
       return (_level.move_count < 1 || _goalRemaining.Count < 1); 
    }

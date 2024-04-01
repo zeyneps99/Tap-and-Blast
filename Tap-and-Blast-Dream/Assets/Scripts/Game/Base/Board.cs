@@ -5,7 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-
+using DG.Tweening;
 public class Board : MonoBehaviour
 {
     public int Width {get; private set;}
@@ -19,6 +19,10 @@ public class Board : MonoBehaviour
 
     private bool _isEnabled = false;
 
+    private Vector2 _cellSize;
+
+    private Dictionary<Vector2Int, Vector2> _gridToWorldPos;
+
 
     private void Awake() {
       _factory = new BoardEntityFactory(transform);
@@ -28,6 +32,7 @@ public class Board : MonoBehaviour
     Width = width;
     Height = height;
     Items = new BoardEntity[Width, Height];
+    _gridToWorldPos = new Dictionary<Vector2Int, Vector2>();
     SetBoard(grid);
    }
 
@@ -56,9 +61,12 @@ public class Board : MonoBehaviour
                 {
                     BoardEntity entity = entityArr[count];
                     entity.name =  "Entity - " + i + " , " + j;
-                    entity.transform.SetParent(_container.transform);
+
+
+                    entity.transform.SetParent(_container.transform, true);
                     entity.transform.localScale = Vector2.one;
                     entity.Set(new Vector2Int(i, j), this);
+                    StartCoroutine(CoWaitForPosition(entity));
                     Items[i, j] = entity;
                     count++;
                 } else
@@ -67,9 +75,19 @@ public class Board : MonoBehaviour
                 }
                
             }
+        }
 
         }
-        }
+
+
+private IEnumerator CoWaitForPosition(BoardEntity entity)
+{
+    if (entity == null) {
+      yield return null;
+    }
+    yield return new WaitForEndOfFrame();
+    _gridToWorldPos.Add(entity.GetPosition(), entity.transform.position);
+}
 
     private void SetGridLayout(GameObject container)
     {
@@ -84,13 +102,16 @@ public class Board : MonoBehaviour
                 if (sampleCube.TryGetComponent<RectTransform>(out var cubeRT))
                 {
                     float _itemWidth = cubeRT.rect.width;
-                    layout.cellSize = new Vector2(.75f, .75f)* _itemWidth;
+                    _cellSize = new Vector2(.75f, .75f)* _itemWidth;
+                    layout.cellSize = _cellSize;
                     GenerateGrid(layout.cellSize.x);
                 }
             }
             _factory.Return(sampleCube);
         }
     }
+
+
 
     private void GenerateGrid(float cellSize)
     {
@@ -167,7 +188,7 @@ public class Board : MonoBehaviour
     }
 
     public void Enable(bool isEnable) {
-      if (isEnable != IsEnabled()) {
+     
       _isEnabled = isEnable;
       foreach(BoardEntity item in Items) {
         if (item!= null && item.TryGetComponent(out Blastable blastable)) {
@@ -178,7 +199,7 @@ public class Board : MonoBehaviour
         {
           layout.enabled = isEnable;
         }
-      }
+      
     }
 
     public bool IsEnabled() {
@@ -201,6 +222,7 @@ public class Board : MonoBehaviour
     }
 
     public void ReplaceItemsAfterBlast() {
+      int[] array = Enumerable.Repeat(-1, Width).ToArray();
       for(int j = 0; j < Height; j++) {
         for(int i = 0; i < Width; i++) {
           BoardEntity entity = Items[i,j];
@@ -209,23 +231,40 @@ public class Board : MonoBehaviour
           }
           if (entity.TryGetComponent(out IFallible fallible)) {
             Vector2Int bottomNeighborPos = new Vector2Int(i, j-1);
-            if (!IsIndexOutOfBounds(bottomNeighborPos)) {
-              if (Items[bottomNeighborPos.x, bottomNeighborPos.y] == null) {
-                fallible.Fall(bottomNeighborPos);
-                entity.Set(bottomNeighborPos, this);
-                Items[bottomNeighborPos.x, bottomNeighborPos.y] = entity;
-                entity.name = "Entity - " + bottomNeighborPos.x + " , " + bottomNeighborPos.y;
+            while(!IsIndexOutOfBounds(bottomNeighborPos) 
+            && Items[bottomNeighborPos.x, bottomNeighborPos.y] == null) {
+                if (array[i] == -1) {
+                  array[i] = j;
+                }                
+                bottomNeighborPos = new Vector2Int(bottomNeighborPos.x, bottomNeighborPos.y - 1);
               }
-          } 
-          }
+              Vector2Int destinationPos = new Vector2Int(bottomNeighborPos.x, bottomNeighborPos.y + 1);
+              Items[i, j] = null;
+              Items[destinationPos.x, destinationPos.y] = entity;
+              entity.Set(destinationPos, this);
+              entity.name = "Entity - " + destinationPos.x + " , " + destinationPos.y;
+              fallible.Fall(GetWorldPosition(destinationPos), j - array[i]);
+            }
       }
       }
 
     }
+
 
     private bool IsIndexOutOfBounds(Vector2Int pos) {
       return (pos.x < 0 || pos.x >= Width || pos.y < 0 || pos.y >= Height);
     }
+
+  
+    public Vector2 GetWorldPosition(Vector2Int boardPos) {
+      if (_gridToWorldPos.ContainsKeySafe(boardPos)) {
+        return _gridToWorldPos[boardPos];
+      } else {
+        return Vector2.negativeInfinity;
+      }
+    }
+
+    
 
     }
 

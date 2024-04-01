@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class Vase : Obstacle, IFallible
 {
-    public void Fall(Vector2Int newPos)
+    public float Duration { get; set; }
+
+
+    public void Fall(Vector2 newPos)
     {
         throw new System.NotImplementedException();
     }
+
+
 }

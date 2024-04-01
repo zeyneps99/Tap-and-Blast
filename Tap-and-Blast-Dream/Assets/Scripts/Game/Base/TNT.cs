@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class TNT : Blastable, IAnimatable, IFallible
 {
+    public float Duration { get; set; }
+
     // TODO
     public override bool CanBlastNeighbor(Blastable neighbor)
     {
@@ -14,9 +16,9 @@ public class TNT : Blastable, IAnimatable, IFallible
     {
         throw new NotImplementedException();
     }
-
-    public void Fall(Vector2Int newPos)
+    public void Fall(Vector2 newPos)
     {
         throw new NotImplementedException();
     }
+
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface IFallible 
 {
-    public abstract void Fall(Vector2Int newPos);
+    public abstract void Fall(Vector2 newPos);
+    
 
 }

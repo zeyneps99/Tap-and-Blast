@@ -102,18 +102,26 @@ public class BoardEntityFactory
     public void Return(BoardEntity entityToReturn) {
         if (entityToReturn.TryGetComponent(out Cube cube) ) {
             _cubePool.Put(cube);
+            cube.transform.SetParent(_parent);
         }
         else if(entityToReturn.TryGetComponent(out TNT tnt) ) {
             _TNTPool.Put(tnt);
+            tnt.transform.SetParent(_parent);
+
         }
         else if(entityToReturn.TryGetComponent(out Box box) ) {
             _boxPool.Put(box);
+            box.transform.SetParent(_parent);
+
         }       
         else if(entityToReturn.TryGetComponent(out Vase vase) ) {
             _vasePool.Put(vase);
+            vase.transform.SetParent(_parent);
+
         }        
         else if(entityToReturn.TryGetComponent(out Stone stone) ) {
             _stonePool.Put(stone);
+            stone.transform.SetParent(_parent);
         }
         
     }

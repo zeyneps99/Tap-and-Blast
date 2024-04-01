@@ -1,15 +1,15 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
 
 [RequireComponent(typeof(Image))]
 public class Cube : Blastable, IAnimatable, IFallible
 {
     public CubeTypes Type {private set; get;}
+    public float Duration {get; set;}
+
     private Image _image; 
 
     [SerializeField] private ParticleSystem _blastParticles;
@@ -21,6 +21,7 @@ public class Cube : Blastable, IAnimatable, IFallible
         Type = (CubeTypes) cubeType;
         SetSprite(cubeType);
         SetParticleMaterial(cubeType);
+        Duration = .3f;
     }
 
     private void SetSprite(int type) {
@@ -75,13 +76,14 @@ public class Cube : Blastable, IAnimatable, IFallible
     }
 
     private IEnumerator ParticleAnimationRoutine(ParticleSystem particles, Action onComplete = null) {
-        _blastParticles.Play();
-        yield return new WaitUntil(() => !_blastParticles.isPlaying);
+        particles.Play();
+        yield return new WaitUntil(() => !particles.isPlaying);
         onComplete?.Invoke();
     }
 
-    public void Fall(Vector2Int newPos)
+    public void Fall(Vector2 newPos)
     {
-        Debug.Log(name + " is falling");
+         transform.DOMoveY(newPos.y, Duration)
+             .SetEase(Ease.OutBounce);
     }
 }
