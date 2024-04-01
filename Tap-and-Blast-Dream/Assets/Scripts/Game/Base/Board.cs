@@ -222,7 +222,6 @@ private IEnumerator CoWaitForPosition(BoardEntity entity)
     }
 
     public void ReplaceItemsAfterBlast() {
-      int[] array = Enumerable.Repeat(-1, Width).ToArray();
       for(int j = 0; j < Height; j++) {
         for(int i = 0; i < Width; i++) {
           BoardEntity entity = Items[i,j];
@@ -232,10 +231,7 @@ private IEnumerator CoWaitForPosition(BoardEntity entity)
           if (entity.TryGetComponent(out IFallible fallible)) {
             Vector2Int bottomNeighborPos = new Vector2Int(i, j-1);
             while(!IsIndexOutOfBounds(bottomNeighborPos) 
-            && Items[bottomNeighborPos.x, bottomNeighborPos.y] == null) {
-                if (array[i] == -1) {
-                  array[i] = j;
-                }                
+            && Items[bottomNeighborPos.x, bottomNeighborPos.y] == null) {             
                 bottomNeighborPos = new Vector2Int(bottomNeighborPos.x, bottomNeighborPos.y - 1);
               }
               Vector2Int destinationPos = new Vector2Int(bottomNeighborPos.x, bottomNeighborPos.y + 1);
@@ -243,7 +239,7 @@ private IEnumerator CoWaitForPosition(BoardEntity entity)
               Items[destinationPos.x, destinationPos.y] = entity;
               entity.Set(destinationPos, this);
               entity.name = "Entity - " + destinationPos.x + " , " + destinationPos.y;
-              fallible.Fall(GetWorldPosition(destinationPos), j - array[i]);
+              fallible.Fall(GetWorldPosition(destinationPos));
             }
       }
       }
