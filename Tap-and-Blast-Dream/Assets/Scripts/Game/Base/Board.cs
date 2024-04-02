@@ -21,8 +21,7 @@ public class Board : MonoBehaviour
 
     private Vector2 _cellSize;
 
-    private Dictionary<Vector2Int, Vector2> _gridToWorldPos;
-
+    private GridHelper _gridHelper;
 
     private void Awake()
     {
@@ -34,9 +33,21 @@ public class Board : MonoBehaviour
         Width = width;
         Height = height;
         Items = new BoardEntity[Width, Height];
-        _gridToWorldPos = new Dictionary<Vector2Int, Vector2>();
         SetBoard(grid);
     }
+
+    private void IntializeGrid(GameObject container)
+    {
+        if (container.TryGetComponent<GridLayoutGroup>(out var layout))
+        {
+            var sampleCube = _factory.GetCube(1);
+            sampleCube.name = "sample cube";
+            _gridHelper = new GridHelper(Width, Height, sampleCube.gameObject, _container.GetComponent<GridLayoutGroup>(), _grid);
+            _gridHelper.SetLayout();
+            _factory.Return(sampleCube);
+        }
+    }
+
 
     private void SetBoard(string[] grid)
     {
@@ -53,7 +64,7 @@ public class Board : MonoBehaviour
         {
             return;
         }
-        SetGridLayout(_container);
+        IntializeGrid(_container);
 
         int count = 0;
 
@@ -90,7 +101,7 @@ public class Board : MonoBehaviour
         }
         yield return new WaitForEndOfFrame();
         Vector2Int pos = GetPositionOfItem(entity);
-        _gridToWorldPos.Add(pos, entity.transform.position);
+        _gridHelper.AddWorldPosition(pos, entity.transform.position);
         if (pos.x == Width - 1 && pos.y == Height - 1){
           if (_container.TryGetComponent(out GridLayoutGroup layoutGroup)) {
             layoutGroup.enabled = false;
@@ -98,38 +109,8 @@ public class Board : MonoBehaviour
         }
     }
 
-    private void SetGridLayout(GameObject container)
-    {
-        if (container.TryGetComponent<GridLayoutGroup>(out var layout))
-        {
-            layout.constraint = GridLayoutGroup.Constraint.FixedRowCount;
-            layout.constraintCount = Height;
+    
 
-            var sampleCube = _factory.GetCube(1);
-            sampleCube.name = "sampleCube";
-            if (sampleCube != null && sampleCube.gameObject != null)
-            {
-                if (sampleCube.TryGetComponent<RectTransform>(out var cubeRT))
-                {
-                    float _itemWidth = cubeRT.rect.width;
-                    _cellSize = new Vector2(.75f, .75f) * _itemWidth;
-                    layout.cellSize = _cellSize;
-                    GenerateGrid(layout.cellSize.x);
-                }
-            }
-            _factory.Return(sampleCube);
-        }
-    }
-
-
-
-    private void GenerateGrid(float cellSize)
-    {
-        if (_grid != null)
-        {
-            _grid.sizeDelta = new Vector2(Width + .25f, Height + .25f) * cellSize;
-        }
-    }
 
     private BoardEntity[] GetGridItems(string[] grid)
     {
@@ -281,7 +262,7 @@ public class Board : MonoBehaviour
                     Items[destinationPos.x, destinationPos.y] = entity;
                     entity.name = "Entity - " + destinationPos.x + " , " + destinationPos.y;
                     fallCount++;
-                    fallible.Fall(GetWorldPosition(destinationPos), () =>
+                    fallible.Fall(_gridHelper.GetWorldPosition(destinationPos), () =>
                     {
                         completedFallCount++;
                     });
@@ -302,7 +283,8 @@ public class Board : MonoBehaviour
                 BoardEntity entity = Items[i, j];
                 if (entity == null)
                 {
-                    Debug.Log(i + " , " + j + " is null");
+
+
                 }
             }
         }
@@ -316,17 +298,7 @@ public class Board : MonoBehaviour
     }
 
 
-    public Vector2 GetWorldPosition(Vector2Int boardPos)
-    {
-        if (_gridToWorldPos.ContainsKeySafe(boardPos))
-        {
-            return _gridToWorldPos[boardPos];
-        }
-        else
-        {
-            return Vector2.negativeInfinity;
-        }
-    }
+
 
     public Vector2Int GetPositionOfItem(BoardEntity entity)
     {
