@@ -283,11 +283,17 @@ public class Board : MonoBehaviour
                 if (entity == null)
                 {
                   Cube newCube = _factory.GetCube(Random.Range(1,5));
-                  newCube.transform.position = _gridHelper.GetWorldPosition(new Vector2Int(i,j));
+                  Vector3 topPosition = _gridHelper.GetWorldPosition(new Vector2Int(i,j));
+                  
+                  newCube.transform.SetParent(_container.transform);
+                  newCube.transform.position = topPosition;
                   newCube.transform.localScale = Vector3.one;
+                  newCube.SetVisible(false);
+                  
                   Vector2 cubeSize = _gridHelper.GetCellSize();
                   if (newCube.TryGetComponent(out RectTransform rt)){
                     rt.sizeDelta = cubeSize;
+                    newCube.transform.localPosition += new Vector3(0, rt.rect.height, 0);
                   }
                   newCube.name = "Entity - " + i + " , " + j;
                   Items[i,j] = newCube;
@@ -295,16 +301,13 @@ public class Board : MonoBehaviour
             }
         }
 
-    }
 
+    }
 
     private bool IsIndexOutOfBounds(Vector2Int pos)
     {
         return (pos.x < 0 || pos.x >= Width || pos.y < 0 || pos.y >= Height);
     }
-
-
-
 
     public Vector2Int GetPositionOfItem(BoardEntity entity)
     {

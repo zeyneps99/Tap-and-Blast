@@ -105,5 +105,8 @@ public class Cube : Blastable, IAnimatable, IFallible
     }
     
 
+    public void SetVisible(bool isVisible) {
+        _image.enabled = isVisible;
+    }
     
 }

@@ -64,7 +64,6 @@ public class GridHelper
         }
     }
 
-     
     public Vector2 GetCellSize() {
         return _cellSize;
     }
