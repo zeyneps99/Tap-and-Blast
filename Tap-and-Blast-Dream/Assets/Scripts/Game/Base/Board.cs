@@ -232,6 +232,15 @@ public class Board : MonoBehaviour
     public void ReplaceItemsAfterBlast()
     {
         StartCoroutine(MakeFalliblesFall());
+        List<Cube> replacementCubes =  ReplaceFallibles();
+
+        if (replacementCubes != null&& replacementCubes.Count > 0) {
+          for(int i=0; i < replacementCubes.Count; i++) {
+            Cube cube = replacementCubes[i];
+            Vector3 fallPos = _gridHelper.GetWorldPosition(GetPositionOfItem(cube));
+            cube.Fall(fallPos);
+          }
+        }
     }
 
 
@@ -270,11 +279,12 @@ public class Board : MonoBehaviour
         }
 
         yield return new WaitUntil(() => completedFallCount == fallCount);
-        ReplaceFallibles();
+        
     }
 
-    private void ReplaceFallibles()
+    private List<Cube> ReplaceFallibles()
     {
+      List<Cube> newCubes = new List<Cube>();
         for (int i = 0; i < Width; i++)
         {
             for (int j = 0; j < Height; j++)
@@ -288,8 +298,6 @@ public class Board : MonoBehaviour
                   newCube.transform.SetParent(_container.transform);
                   newCube.transform.position = topPosition;
                   newCube.transform.localScale = Vector3.one;
-                  newCube.SetVisible(false);
-                  
                   Vector2 cubeSize = _gridHelper.GetCellSize();
                   if (newCube.TryGetComponent(out RectTransform rt)){
                     rt.sizeDelta = cubeSize;
@@ -297,9 +305,11 @@ public class Board : MonoBehaviour
                   }
                   newCube.name = "Entity - " + i + " , " + j;
                   Items[i,j] = newCube;
+                  newCubes.Add(newCube);
                 }
             }
         }
+        return newCubes;
 
 
     }
