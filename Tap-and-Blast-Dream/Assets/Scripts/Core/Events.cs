@@ -16,6 +16,5 @@ public static partial class Events
         public static Action<LevelInfo> OnLevelGenerated;
         public static Action<Blastable> OnPlayerInput;
         public static Action<List<Blastable>> OnBlast;
-        public static Action OnBlastRemoved;
     }
 }

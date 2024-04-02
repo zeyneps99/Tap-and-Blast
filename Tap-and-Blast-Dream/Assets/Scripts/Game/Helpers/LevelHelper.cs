@@ -106,6 +106,7 @@ public class LevelHelper : MonoBehaviour
     public void FillEmptySpaces()
     {
         _board.ReplaceItemsAfterBlast();
+        _board.Enable(true);
     }
 
 }

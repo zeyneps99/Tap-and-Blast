@@ -48,9 +48,7 @@ public class GameLogic : Singleton<GameLogic>
         }
     }
 
-    public void ItemsFall() {
-        _levelHelper.FillEmptySpaces();
-    }
+    
 
     
 

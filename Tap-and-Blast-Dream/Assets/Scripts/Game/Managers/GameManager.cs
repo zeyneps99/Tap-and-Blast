@@ -29,7 +29,6 @@ public class GameManager : Singleton<GameManager>
         Events.GameEvents.OnPlay += PlayGame;
         Events.GameEvents.OnPlayerInput += RegisterBlastRequest;
         Events.GameEvents.OnBlast += PerformBlast;
-        Events.GameEvents.OnBlastRemoved += OnItemsFall;
     }
 
 
@@ -38,7 +37,6 @@ public class GameManager : Singleton<GameManager>
         Events.GameEvents.OnPlay -= PlayGame;
         Events.GameEvents.OnPlayerInput -= RegisterBlastRequest;
         Events.GameEvents.OnBlast -= PerformBlast;
-        Events.GameEvents.OnBlastRemoved -= OnItemsFall;
     }
 
     public bool IsInGame() {
@@ -67,9 +65,7 @@ public class GameManager : Singleton<GameManager>
     {
         GameLogic.Instance.HandleBlast(list);
     }
-    
-    private void OnItemsFall() {
-        GameLogic.Instance.ItemsFall();
-    }
+
+     
 
 }
