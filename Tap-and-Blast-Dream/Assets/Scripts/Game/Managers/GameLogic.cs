@@ -40,13 +40,12 @@ public class GameLogic : Singleton<GameLogic>
         }
         else {
             //TODO
-            if (_levelHelper.IsLevelOver()) {
-                Debug.Log("Game over");
-            } else {
                 _levelHelper.HandleBlast(blastables);
-                
+                if (_levelHelper.IsLevelOver()) {
+                Debug.Log("Game over");
             }
         }
+        
     }
 
     
