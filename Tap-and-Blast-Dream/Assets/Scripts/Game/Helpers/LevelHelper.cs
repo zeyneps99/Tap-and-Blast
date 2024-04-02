@@ -68,11 +68,16 @@ public class LevelHelper : MonoBehaviour
         return (_level.move_count < 1 || _goalRemaining.Count < 1);
     }
 
+    public void UpdateMoves(bool isIncrease){
+        _level.move_count += isIncrease ? 1 : -1;
+        UIManager.Instance.UpdateMoves(_level.move_count);
+    }
+
     //TODO
     public void HandleBlast(List<Blastable> list)
     {
-        //call event to change move count
         _board.Enable(false);
+        UpdateMoves(false);
         Vector2Int pos = Vector2Int.zero;
         int itemsToAnimate = 0;
         foreach (Blastable item in list)

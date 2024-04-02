@@ -44,6 +44,7 @@ public class GameLogic : Singleton<GameLogic>
                 Debug.Log("Game over");
             } else {
                 _levelHelper.HandleBlast(blastables);
+                
             }
         }
     }

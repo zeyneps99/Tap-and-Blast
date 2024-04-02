@@ -240,10 +240,7 @@ public class Board : MonoBehaviour
             cube.Fall(fallPos);
           }
         }
-
-
     }
-
 
     private IEnumerator MakeFalliblesFall()
     {

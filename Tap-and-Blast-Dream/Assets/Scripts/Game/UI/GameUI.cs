@@ -20,7 +20,7 @@ public class GameUI : MonoBehaviour
         SetGoal(levelInfo.Goal);
     }
 
-    private void SetMoves(int moveCount) {
+    public void SetMoves(int moveCount) {
         if(_moveCount != null) {
             _moveCount.text = moveCount.ToString();
         }
