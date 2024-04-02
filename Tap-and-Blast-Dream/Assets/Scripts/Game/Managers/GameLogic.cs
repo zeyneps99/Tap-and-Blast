@@ -42,14 +42,9 @@ public class GameLogic : Singleton<GameLogic>
             //TODO
                 _levelHelper.HandleBlast(blastables);
                 if (_levelHelper.IsLevelOver()) {
-                Debug.Log("Game over");
+                Events.GameEvents.OnGameOver?.Invoke(false);
             }
         }
-        
     }
-
-    
-
-    
 
 }

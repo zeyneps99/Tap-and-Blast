@@ -29,6 +29,7 @@ public class GameManager : Singleton<GameManager>
         Events.GameEvents.OnPlay += PlayGame;
         Events.GameEvents.OnPlayerInput += RegisterBlastRequest;
         Events.GameEvents.OnBlast += PerformBlast;
+        Events.GameEvents.OnGameOver += EndGame;
     }
 
 
@@ -37,6 +38,7 @@ public class GameManager : Singleton<GameManager>
         Events.GameEvents.OnPlay -= PlayGame;
         Events.GameEvents.OnPlayerInput -= RegisterBlastRequest;
         Events.GameEvents.OnBlast -= PerformBlast;
+        Events.GameEvents.OnGameOver -= EndGame;
     }
 
     public bool IsInGame() {
@@ -66,6 +68,9 @@ public class GameManager : Singleton<GameManager>
         GameLogic.Instance.HandleBlast(list);
     }
 
-     
+    private void EndGame(bool isWin) {
+        Debug.Log(isWin ? "Game won" : "Game lost");
+    }
+    
 
 }
