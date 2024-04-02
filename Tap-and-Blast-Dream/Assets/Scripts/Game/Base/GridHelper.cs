@@ -13,6 +13,9 @@ public class GridHelper
     private RectTransform _grid;
     private Dictionary<Vector2Int, Vector3> _gridToWorldPos;
 
+    private Vector2 _cellSize;
+
+
 
     public GridHelper(int width, int height, GameObject sampleObject, GridLayoutGroup layoutGroup, RectTransform grid) {
         _width = width;
@@ -32,6 +35,7 @@ public class GridHelper
                 {
                     float _itemWidth = cubeRT.rect.width;
                     _layoutGroup.cellSize = new Vector2(.75f, .75f) * _itemWidth;
+                    _cellSize = _layoutGroup.cellSize;
                     GenerateGrid(_layoutGroup.cellSize.x);
                 }
     }
@@ -61,6 +65,9 @@ public class GridHelper
     }
 
      
+    public Vector2 GetCellSize() {
+        return _cellSize;
+    }
 
 
 }

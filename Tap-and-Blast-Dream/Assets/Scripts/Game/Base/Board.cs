@@ -36,17 +36,6 @@ public class Board : MonoBehaviour
         SetBoard(grid);
     }
 
-    private void IntializeGrid(GameObject container)
-    {
-        if (container.TryGetComponent<GridLayoutGroup>(out var layout))
-        {
-            var sampleCube = _factory.GetCube(1);
-            sampleCube.name = "sample cube";
-            _gridHelper = new GridHelper(Width, Height, sampleCube.gameObject, _container.GetComponent<GridLayoutGroup>(), _grid);
-            _gridHelper.SetLayout();
-            _factory.Return(sampleCube);
-        }
-    }
 
 
     private void SetBoard(string[] grid)
@@ -93,6 +82,18 @@ public class Board : MonoBehaviour
     }
 
 
+    private void IntializeGrid(GameObject container)
+    {
+        if (container.TryGetComponent<GridLayoutGroup>(out var layout))
+        {
+            var sampleCube = _factory.GetCube(1);
+            sampleCube.name = "sample cube";
+            _gridHelper = new GridHelper(Width, Height, sampleCube.gameObject, _container.GetComponent<GridLayoutGroup>(), _grid);
+            _gridHelper.SetLayout();
+            _factory.Return(sampleCube);
+        }
+    }
+
     private IEnumerator CoWaitForPosition(BoardEntity entity)
     {
         if (entity == null)
@@ -108,8 +109,6 @@ public class Board : MonoBehaviour
           }
         }
     }
-
-    
 
 
     private BoardEntity[] GetGridItems(string[] grid)
@@ -283,8 +282,15 @@ public class Board : MonoBehaviour
                 BoardEntity entity = Items[i, j];
                 if (entity == null)
                 {
-
-
+                  Cube newCube = _factory.GetCube(Random.Range(1,5));
+                  newCube.transform.position = _gridHelper.GetWorldPosition(new Vector2Int(i,j));
+                  newCube.transform.localScale = Vector3.one;
+                  Vector2 cubeSize = _gridHelper.GetCellSize();
+                  if (newCube.TryGetComponent(out RectTransform rt)){
+                    rt.sizeDelta = cubeSize;
+                  }
+                  newCube.name = "Entity - " + i + " , " + j;
+                  Items[i,j] = newCube;
                 }
             }
         }
