@@ -232,18 +232,12 @@ public class Board : MonoBehaviour
     public void ReplaceItemsAfterBlast()
     {
         StartCoroutine(MakeFalliblesFall());
-        List<Cube> replacementCubes =  ReplaceFallibles();
-        int itemsToFall = replacementCubes.Count;
+        List<Cube> replacementCubes = ReplaceFallibles();
         if (replacementCubes != null&& replacementCubes.Count > 0) {
           for(int i=0; i < replacementCubes.Count; i++) {
             Cube cube = replacementCubes[i];
             Vector3 fallPos = _gridHelper.GetWorldPosition(GetPositionOfItem(cube));
-            cube.Fall(fallPos, () => {
-              itemsToFall--;
-              if (itemsToFall == 0) {
-                
-              }
-            });
+            cube.Fall(fallPos);
           }
         }
 
