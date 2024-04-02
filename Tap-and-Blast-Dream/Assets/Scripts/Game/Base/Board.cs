@@ -45,8 +45,8 @@ public class Board : MonoBehaviour
 
         if (_container == null)
         {
-            Debug.LogWarning("Container of board is empty")
-; return;
+            Debug.LogWarning("Container of board is empty"); 
+            return;
         }
 
         if (entityArr == null || entityArr.Length <= 0)
@@ -89,7 +89,13 @@ public class Board : MonoBehaviour
             yield return null;
         }
         yield return new WaitForEndOfFrame();
-        _gridToWorldPos.Add(GetPositionOfItem(entity), entity.transform.position);
+        Vector2Int pos = GetPositionOfItem(entity);
+        _gridToWorldPos.Add(pos, entity.transform.position);
+        if (pos.x == Width - 1 && pos.y == Height - 1){
+          if (_container.TryGetComponent(out GridLayoutGroup layoutGroup)) {
+            layoutGroup.enabled = false;
+          }
+        }
     }
 
     private void SetGridLayout(GameObject container)
@@ -245,12 +251,14 @@ public class Board : MonoBehaviour
 
     public void ReplaceItemsAfterBlast()
     {
-      MakeFalliblesFall();
+        StartCoroutine(MakeFalliblesFall());
     }
 
 
-    private void MakeFalliblesFall()
+    private IEnumerator MakeFalliblesFall()
     {
+        int fallCount = 0;
+        int completedFallCount = 0;
         for (int j = 0; j < Height; j++)
         {
             for (int i = 0; i < Width; i++)
@@ -272,21 +280,30 @@ public class Board : MonoBehaviour
                     Items[i, j] = null;
                     Items[destinationPos.x, destinationPos.y] = entity;
                     entity.name = "Entity - " + destinationPos.x + " , " + destinationPos.y;
-                    fallible.Fall(GetWorldPosition(destinationPos));
+                    fallCount++;
+                    fallible.Fall(GetWorldPosition(destinationPos), () =>
+                    {
+                        completedFallCount++;
+                    });
                 }
             }
         }
+
+        yield return new WaitUntil(() => completedFallCount == fallCount);
+        ReplaceFallibles();
     }
 
     private void ReplaceFallibles()
     {
-
-        for (int i = 0; i < Height; i++)
+        for (int i = 0; i < Width; i++)
         {
-            for (int j = 0; j < Width; j++)
+            for (int j = 0; j < Height; j++)
             {
                 BoardEntity entity = Items[i, j];
-
+                if (entity == null)
+                {
+                    Debug.Log(i + " , " + j + " is null");
+                }
             }
         }
 
