@@ -68,8 +68,9 @@ public class GameManager : Singleton<GameManager>
         GameLogic.Instance.HandleBlast(list);
     }
 
+    //todo
     private void EndGame(bool isWin) {
-        Debug.Log(isWin ? "Game won" : "Game lost");
+
     }
     
 

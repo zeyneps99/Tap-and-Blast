@@ -27,11 +27,13 @@ public class UIManager : Singleton<UIManager>
     private void OnEnable() {
         Events.GameEvents.OnMainMenuStarted += DisplayMainUI;
         Events.GameEvents.OnLevelGenerated += DisplayGameUI;
+        Events.GameEvents.OnGameOver += DisplayGameOver;
     }
 
     private void OnDisable() {
         Events.GameEvents.OnMainMenuStarted -= DisplayMainUI;
         Events.GameEvents.OnLevelGenerated -= DisplayGameUI;
+        Events.GameEvents.OnGameOver -= DisplayGameOver;
     }
     
     public void DisplayMainUI() {
@@ -53,6 +55,18 @@ public class UIManager : Singleton<UIManager>
     public void UpdateMoves(int moveCount) {
         if (_gameUI != null) {
             _gameUI.SetMoves(moveCount);
+        }
+    }
+
+
+    public void DisplayGameOver(bool isWin) {
+        if (!isWin) {
+            ShowFail();
+        }
+    }
+    private void ShowFail() {
+        if (_gameUI != null) {
+            _gameUI.DisplayFailPopUp(true);
         }
     }
 

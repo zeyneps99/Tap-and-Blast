@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,6 +10,8 @@ public class GameUI : MonoBehaviour
     [SerializeField] private Transform _goalContainer;
     [SerializeField] private GameObject _goalItemPrefab;
 
+    [SerializeField] private FailPopUp _failPopUp;
+
     private Dictionary<ObstacleTypes, GoalItem> _goalItems;
 
     private LevelInfo _levelInfo;
@@ -18,6 +21,7 @@ public class GameUI : MonoBehaviour
         _goalItems = new Dictionary<ObstacleTypes, GoalItem>();
         SetMoves(levelInfo.MoveCount);
         SetGoal(levelInfo.Goal);
+        SetFailPopUp();
     }
 
     public void SetMoves(int moveCount) {
@@ -50,12 +54,23 @@ public class GameUI : MonoBehaviour
                 _goalItems[type].Set((int) type, goal[type]);
             }
         }
-
-
-      
-
-        
     }
+
+    private void SetFailPopUp()
+    {
+        if(_failPopUp != null) {
+            _failPopUp.Init();
+            _failPopUp.Display(false);
+        }
+    }
+
+    public void DisplayFailPopUp(bool isDisplay) {
+        if (_failPopUp != null) {
+            _failPopUp.Display(isDisplay);
+        }
+    }
+
+  
 
    
 }
