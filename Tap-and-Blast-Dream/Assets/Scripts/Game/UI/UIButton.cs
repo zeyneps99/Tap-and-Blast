@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Events;
 [RequireComponent(typeof(Button))]
-public class UIButton : MonoBehaviour
+public class UIButton : MonoBehaviour, IAnimatable
 {
     [SerializeField] private GameObject _foregroundObject;
     private Button _button;
@@ -44,7 +44,7 @@ public class UIButton : MonoBehaviour
 
     private void OnClick()
     {
-        StartCoroutine(AnimateThenExecuteCallbacks());
+        Animate();
     }
 
     private IEnumerator AnimateThenExecuteCallbacks() {
@@ -68,8 +68,8 @@ public class UIButton : MonoBehaviour
     sequence.Play();
 }
 
-
-
-
-    
+    public void Animate(Action onComplete = null)
+    {
+        StartCoroutine(AnimateThenExecuteCallbacks());
+    }
 }
