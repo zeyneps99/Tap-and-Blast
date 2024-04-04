@@ -19,8 +19,6 @@ public class Board : MonoBehaviour
 
     private bool _isEnabled = false;
 
-    private Vector2 _cellSize;
-
     private GridHelper _gridHelper;
 
     private void Awake()
@@ -84,11 +82,11 @@ public class Board : MonoBehaviour
 
     private void IntializeGrid(GameObject container)
     {
-        if (container.TryGetComponent<GridLayoutGroup>(out var layout))
+        if (container.TryGetComponent(out GridLayoutGroup layout))
         {
             var sampleCube = _factory.GetCube(1);
             sampleCube.name = "sample cube";
-            _gridHelper = new GridHelper(Width, Height, sampleCube.gameObject, _container.GetComponent<GridLayoutGroup>(), _grid);
+            _gridHelper = new GridHelper(Width, Height, sampleCube.gameObject, layout, _grid);
             _gridHelper.SetLayout();
             _factory.Return(sampleCube);
         }
@@ -206,11 +204,6 @@ public class Board : MonoBehaviour
                 blastable.Enable(isEnable);
             }
         }
-    }
-
-    public bool IsEnabled()
-    {
-        return _isEnabled;
     }
 
     public void RemoveItem(BoardEntity entity)
@@ -336,6 +329,13 @@ public class Board : MonoBehaviour
             }
         }
         return Vector2Int.down;
+    }
+
+    public void Reset() {
+        Enable(false);
+        foreach(BoardEntity entity in Items) {
+            RemoveItem(entity);
+        }
     }
 
 

@@ -47,6 +47,14 @@ public class GameLogic : Singleton<GameLogic>
         }
     }
 
-    
+    public void EndGame(bool isWin) {
+        _levelHelper.EndLevel();
+        if (isWin) {
+            int currentLevel = PlayerPrefs.GetInt("currentLevel" , 1);
+            PlayerPrefs.SetInt("currentLevel", currentLevel + 1);
+        } 
+    }
+
+
 
 }

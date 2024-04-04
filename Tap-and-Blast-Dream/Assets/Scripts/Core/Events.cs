@@ -19,5 +19,7 @@ public static partial class Events
         public static Action<bool> OnGameOver;
         public static Action OnTryAgain;
         public static Action OnQuitLevel;
+
+        public static Action<bool> OnNotifyGameEnd;
     }
 }

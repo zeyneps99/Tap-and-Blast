@@ -16,7 +16,6 @@ public class GridHelper
     private Vector2 _cellSize;
 
 
-
     public GridHelper(int width, int height, GameObject sampleObject, GridLayoutGroup layoutGroup, RectTransform grid) {
         _width = width;
         _height = height;
@@ -24,7 +23,6 @@ public class GridHelper
         _layoutGroup = layoutGroup;
         _grid = grid;
         _gridToWorldPos = new Dictionary<Vector2Int, Vector3>();
-
     }
 
     public void SetLayout(){
@@ -67,6 +65,10 @@ public class GridHelper
     public Vector2 GetCellSize() {
         return _cellSize;
     }
+
+  
+
+  
 
 
 }

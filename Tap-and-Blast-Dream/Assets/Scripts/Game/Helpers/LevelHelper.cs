@@ -9,7 +9,6 @@ public class LevelHelper : MonoBehaviour
 {
     private Board _board;
     private Level _level;
-    private LevelInfo _levelInfo;
 
     private static string _boardPath = "Prefabs/Board/";
     private Canvas _canvas;
@@ -112,6 +111,12 @@ public class LevelHelper : MonoBehaviour
     {
         _board.ReplaceItemsAfterBlast();
         _board.Enable(true);
+    }
+
+    public void EndLevel() {
+        if (_board != null) {
+        _board.Reset();
+        }
     }
 
 }

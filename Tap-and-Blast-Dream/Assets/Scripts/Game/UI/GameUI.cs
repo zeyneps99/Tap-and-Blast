@@ -59,18 +59,17 @@ public class GameUI : MonoBehaviour
     private void SetFailPopUp()
     {
         if(_failPopUp != null) {
-            _failPopUp.Init();
             _failPopUp.Display(false);
+            _failPopUp.Init();
+            _failPopUp.gameObject.SetActive(false);
         }
     }
 
     public void DisplayFailPopUp(bool isDisplay) {
         if (_failPopUp != null) {
             _failPopUp.Display(isDisplay);
+            _failPopUp.gameObject.SetActive(isDisplay);
+            _failPopUp.Animate();
         }
     }
-
-  
-
-   
 }

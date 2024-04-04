@@ -30,15 +30,17 @@ public class GameManager : Singleton<GameManager>
         Events.GameEvents.OnPlayerInput += RegisterBlastRequest;
         Events.GameEvents.OnBlast += PerformBlast;
         Events.GameEvents.OnGameOver += EndGame;
+        Events.GameEvents.OnTryAgain += PlayGame;
+        Events.GameEvents.OnQuitLevel += StartMainMenu;
     }
-
-
 
     private void OnDisable() {
         Events.GameEvents.OnPlay -= PlayGame;
         Events.GameEvents.OnPlayerInput -= RegisterBlastRequest;
         Events.GameEvents.OnBlast -= PerformBlast;
         Events.GameEvents.OnGameOver -= EndGame;
+        Events.GameEvents.OnTryAgain -= PlayGame;
+        Events.GameEvents.OnQuitLevel -= StartMainMenu;
     }
 
     public bool IsInGame() {
@@ -70,7 +72,17 @@ public class GameManager : Singleton<GameManager>
 
     //todo
     private void EndGame(bool isWin) {
+        _isInGame = false;
+      
+        GameLogic.Instance.EndGame(isWin);
 
+        if (isWin) {
+        _sceneManager.LoadScene((int) SceneTypes.MainScene, () => {
+        Events.GameEvents.OnNotifyGameEnd?.Invoke(true);
+        });
+        } else {
+            Events.GameEvents.OnNotifyGameEnd?.Invoke(false);
+        }
     }
     
 

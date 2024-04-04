@@ -309,7 +309,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3447530002799315616, guid: e4e9c45b704774410baca8ee9369aa4c, type: 3}
       propertyPath: m_Name
-      value: ButtonObject
+      value: LevelButton
       objectReference: {fileID: 0}
     - target: {fileID: 4402829422226330578, guid: e4e9c45b704774410baca8ee9369aa4c, type: 3}
       propertyPath: m_fontAsset

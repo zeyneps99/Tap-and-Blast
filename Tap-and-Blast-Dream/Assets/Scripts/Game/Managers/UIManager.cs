@@ -27,13 +27,13 @@ public class UIManager : Singleton<UIManager>
     private void OnEnable() {
         Events.GameEvents.OnMainMenuStarted += DisplayMainUI;
         Events.GameEvents.OnLevelGenerated += DisplayGameUI;
-        Events.GameEvents.OnGameOver += DisplayGameOver;
+        Events.GameEvents.OnNotifyGameEnd += DisplayGameOver;
     }
 
     private void OnDisable() {
         Events.GameEvents.OnMainMenuStarted -= DisplayMainUI;
         Events.GameEvents.OnLevelGenerated -= DisplayGameUI;
-        Events.GameEvents.OnGameOver -= DisplayGameOver;
+        Events.GameEvents.OnNotifyGameEnd -= DisplayGameOver;
     }
     
     public void DisplayMainUI() {
