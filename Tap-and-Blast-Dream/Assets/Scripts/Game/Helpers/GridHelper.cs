@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GridHelper 
+public class GridHelper
 {
     private int _width;
     private int _height;
@@ -16,7 +16,8 @@ public class GridHelper
     private Vector2 _cellSize;
 
 
-    public GridHelper(int width, int height, GameObject sampleObject, GridLayoutGroup layoutGroup, RectTransform grid) {
+    public GridHelper(int width, int height, GameObject sampleObject, GridLayoutGroup layoutGroup, RectTransform grid)
+    {
         _width = width;
         _height = height;
         _sampleObject = sampleObject;
@@ -25,19 +26,20 @@ public class GridHelper
         _gridToWorldPos = new Dictionary<Vector2Int, Vector3>();
     }
 
-    public void SetLayout(){
-            _layoutGroup.constraint = GridLayoutGroup.Constraint.FixedRowCount;
-            _layoutGroup.constraintCount = _height;
+    public void SetLayout()
+    {
+        _layoutGroup.constraint = GridLayoutGroup.Constraint.FixedRowCount;
+        _layoutGroup.constraintCount = _height;
 
-                if (_sampleObject.TryGetComponent<RectTransform>(out var cubeRT))
-                {
-                    float _itemWidth = cubeRT.rect.width;
-                    _layoutGroup.cellSize = new Vector2(.75f, .75f) * _itemWidth;
-                    _cellSize = _layoutGroup.cellSize;
-                    GenerateGrid(_layoutGroup.cellSize.x);
-                }
+        if (_sampleObject.TryGetComponent<RectTransform>(out var cubeRT))
+        {
+            float _itemWidth = cubeRT.rect.width;
+            _layoutGroup.cellSize = new Vector2(.75f, .75f) * _itemWidth;
+            _cellSize = _layoutGroup.cellSize;
+            GenerateGrid(_layoutGroup.cellSize.x);
+        }
     }
-    
+
 
 
     private void GenerateGrid(float cellSize)
@@ -48,27 +50,36 @@ public class GridHelper
         }
     }
 
-    public void AddWorldPosition(Vector2Int boardPosition, Vector3 worldPosition) {
-        if (_gridToWorldPos != null && !_gridToWorldPos.ContainsKeySafe(boardPosition)) {
+    public void AddWorldPosition(Vector2Int boardPosition, Vector3 worldPosition)
+    {
+        if (_gridToWorldPos != null && !_gridToWorldPos.ContainsKeySafe(boardPosition))
+        {
             _gridToWorldPos.Add(boardPosition, worldPosition);
         }
     }
 
-    public Vector3 GetWorldPosition(Vector2Int boardPosition){
-        if (_gridToWorldPos != null && _gridToWorldPos.ContainsKeySafe(boardPosition)){
+    public Vector3 GetWorldPosition(Vector2Int boardPosition)
+    {
+        if (_gridToWorldPos != null && _gridToWorldPos.ContainsKeySafe(boardPosition))
+        {
             return _gridToWorldPos[boardPosition];
-        } else {
+        }
+        else
+        {
             return Vector3.negativeInfinity;
         }
     }
 
-    public Vector2 GetCellSize() {
+    public Vector2 GetCellSize()
+    {
         return _cellSize;
     }
 
-  
 
-  
+ 
+
+
+
 
 
 }

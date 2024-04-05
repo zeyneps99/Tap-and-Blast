@@ -27,12 +27,12 @@ public class FailPopUp : MonoBehaviour, IAnimatable
 
     private void OnDisable()
     {
-          _tryAgainButton?.RemoveListener(TryAgainClicked);
+        _tryAgainButton?.RemoveListener(TryAgainClicked);
         _closeButton?.onClick.RemoveListener(ClosePopup);
     }
-    
-    private void OnEnable() {    
 
+    private void OnEnable()
+    {
         _tryAgainButton?.AddListener(TryAgainClicked);
         _closeButton?.onClick.AddListener(ClosePopup);
     }
@@ -41,7 +41,7 @@ public class FailPopUp : MonoBehaviour, IAnimatable
     {
         if (_levelText != null)
         {
-           _levelText.text = _levelstring + PlayerPrefs.GetInt("currentLevel", 1);
+            _levelText.text = _levelstring + PlayerPrefs.GetInt("currentLevel", 1);
         }
     }
 
@@ -60,10 +60,10 @@ public class FailPopUp : MonoBehaviour, IAnimatable
         Display(false);
         Animate(() =>
         {
-            Events.GameEvents.OnTryAgain?.Invoke();
             gameObject.SetActive(false);
-
+            Events.GameEvents.OnTryAgain?.Invoke();
         });
+
     }
 
     public void Display(bool isShow)
@@ -94,6 +94,6 @@ public class FailPopUp : MonoBehaviour, IAnimatable
             });
         }
         sequence.Play();
-        yield return sequence.WaitForCompletion();
+        yield return sequence.AsyncWaitForCompletion();
     }
 }

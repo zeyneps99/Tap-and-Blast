@@ -23,7 +23,10 @@ public class Board : MonoBehaviour
 
     private void Awake()
     {
-        _factory = new BoardEntityFactory(transform);
+        if (_factory == null)
+        {
+            _factory = new BoardEntityFactory(transform);
+        }
     }
 
     public void Set(int width, int height, string[] grid)
@@ -43,7 +46,7 @@ public class Board : MonoBehaviour
 
         if (_container == null)
         {
-            Debug.LogWarning("Container of board is empty"); 
+            Debug.LogWarning("Container of board is empty");
             return;
         }
 
@@ -51,6 +54,9 @@ public class Board : MonoBehaviour
         {
             return;
         }
+
+
+
         IntializeGrid(_container);
 
         int count = 0;
@@ -77,13 +83,18 @@ public class Board : MonoBehaviour
             }
         }
 
+        Enable(true);
+
     }
-
-
     private void IntializeGrid(GameObject container)
     {
         if (container.TryGetComponent(out GridLayoutGroup layout))
         {
+            if (layout.enabled == false)
+            {
+                layout.enabled = true;
+            }
+
             var sampleCube = _factory.GetCube(1);
             sampleCube.name = "sample cube";
             _gridHelper = new GridHelper(Width, Height, sampleCube.gameObject, layout, _grid);
@@ -101,10 +112,12 @@ public class Board : MonoBehaviour
         yield return new WaitForEndOfFrame();
         Vector2Int pos = GetPositionOfItem(entity);
         _gridHelper.AddWorldPosition(pos, entity.transform.position);
-        if (pos.x == Width - 1 && pos.y == Height - 1){
-          if (_container.TryGetComponent(out GridLayoutGroup layoutGroup)) {
-            layoutGroup.enabled = false;
-          }
+        if (pos.x == Width - 1 && pos.y == Height - 1)
+        {
+            if (_container.TryGetComponent(out GridLayoutGroup layoutGroup))
+            {
+                layoutGroup.enabled = false;
+            }
         }
     }
 
@@ -112,6 +125,7 @@ public class Board : MonoBehaviour
     private BoardEntity[] GetGridItems(string[] grid)
     {
 
+        Debug.Log("entered");
         BoardEntity[] arr = new BoardEntity[grid.Length];
 
         if (grid == null || grid.Length == 0)
@@ -131,7 +145,6 @@ public class Board : MonoBehaviour
 
     private BoardEntity StringToEntity(string str)
     {
-
         if (_factory == null)
         {
             Debug.LogWarning("Factory is null");
@@ -226,12 +239,14 @@ public class Board : MonoBehaviour
     {
         StartCoroutine(MakeFalliblesFall());
         List<Cube> replacementCubes = ReplaceFallibles();
-        if (replacementCubes != null&& replacementCubes.Count > 0) {
-          for(int i=0; i < replacementCubes.Count; i++) {
-            Cube cube = replacementCubes[i];
-            Vector3 fallPos = _gridHelper.GetWorldPosition(GetPositionOfItem(cube));
-            cube.Fall(fallPos);
-          }
+        if (replacementCubes != null && replacementCubes.Count > 0)
+        {
+            for (int i = 0; i < replacementCubes.Count; i++)
+            {
+                Cube cube = replacementCubes[i];
+                Vector3 fallPos = _gridHelper.GetWorldPosition(GetPositionOfItem(cube));
+                cube.Fall(fallPos);
+            }
         }
     }
 
@@ -270,12 +285,12 @@ public class Board : MonoBehaviour
         }
 
         yield return new WaitUntil(() => completedFallCount == fallCount);
-        
+
     }
 
     private List<Cube> ReplaceFallibles()
     {
-      List<Cube> newCubes = new List<Cube>();
+        List<Cube> newCubes = new List<Cube>();
         for (int i = 0; i < Width; i++)
         {
             for (int j = 0; j < Height; j++)
@@ -283,20 +298,21 @@ public class Board : MonoBehaviour
                 BoardEntity entity = Items[i, j];
                 if (entity == null)
                 {
-                  Cube newCube = _factory.GetCube(Random.Range(1,5));
-                  Vector3 topPosition = _gridHelper.GetWorldPosition(new Vector2Int(i,j));
-                  
-                  newCube.transform.SetParent(_container.transform);
-                  newCube.transform.position = topPosition;
-                  newCube.transform.localScale = Vector3.one;
-                  Vector2 cubeSize = _gridHelper.GetCellSize();
-                  if (newCube.TryGetComponent(out RectTransform rt)){
-                    rt.sizeDelta = cubeSize;
-                    newCube.transform.localPosition += new Vector3(0, rt.rect.height, 0);
-                  }
-                  newCube.name = "Entity - " + i + " , " + j;
-                  Items[i,j] = newCube;
-                  newCubes.Add(newCube);
+                    Cube newCube = _factory.GetCube(Random.Range(1, 5));
+                    Vector3 topPosition = _gridHelper.GetWorldPosition(new Vector2Int(i, j));
+
+                    newCube.transform.SetParent(_container.transform);
+                    newCube.transform.position = topPosition;
+                    newCube.transform.localScale = Vector3.one;
+                    Vector2 cubeSize = _gridHelper.GetCellSize();
+                    if (newCube.TryGetComponent(out RectTransform rt))
+                    {
+                        rt.sizeDelta = cubeSize;
+                        newCube.transform.localPosition += new Vector3(0, rt.rect.height, 0);
+                    }
+                    newCube.name = "Entity - " + i + " , " + j;
+                    Items[i, j] = newCube;
+                    newCubes.Add(newCube);
                 }
             }
         }
@@ -331,9 +347,13 @@ public class Board : MonoBehaviour
         return Vector2Int.down;
     }
 
-    public void Reset() {
+    public void Reset()
+    {
         Enable(false);
-        foreach(BoardEntity entity in Items) {
+
+        
+        foreach (BoardEntity entity in Items)
+        {
             RemoveItem(entity);
         }
     }

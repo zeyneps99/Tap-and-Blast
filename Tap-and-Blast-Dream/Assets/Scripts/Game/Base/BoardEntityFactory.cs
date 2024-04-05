@@ -123,6 +123,13 @@ public class BoardEntityFactory
             _stonePool.Put(stone);
             stone.transform.SetParent(_parent);
         }
+
+
+
+        entityToReturn.transform.localPosition = Vector3.zero;
+        entityToReturn.transform.rotation = Quaternion.identity;
+        entityToReturn.transform.localScale = Vector3.one;
+        entityToReturn.name = "";
         
     }
 

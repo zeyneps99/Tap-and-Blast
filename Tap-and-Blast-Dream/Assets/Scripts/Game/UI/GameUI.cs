@@ -35,6 +35,12 @@ public class GameUI : MonoBehaviour
             return;
         }
 
+        if (_goalContainer != null && _goalContainer.GetComponentsInChildren<GoalItem>() != null) {
+            foreach(GoalItem item in _goalContainer.GetComponentsInChildren<GoalItem>()){
+                DestroyImmediate(item.gameObject);
+            }
+        }
+
         foreach(ObstacleTypes type in goal.Keys) {
             if (goal[type] <= 0 && _goalItems.ContainsKeySafe(type)) {
                 if (_goalItems[type] != null) {

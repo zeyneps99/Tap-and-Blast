@@ -9,8 +9,10 @@ using UnityEngine.SceneManagement;
 public class UIManager : Singleton<UIManager>
 {
     private static string _resourcePath = "Prefabs/UI/";
+    private MainMenuUI _mainMenuUIPrefab;
     private MainMenuUI _mainMenuUI;
     private GameUI _gameUI;
+    private GameUI _gameUIPrefab;
     private Canvas _canvas;
 
     void Awake()
@@ -18,54 +20,89 @@ public class UIManager : Singleton<UIManager>
         DontDestroyOnLoad(this);
         GetPrefabs();
     }
- 
-    private void GetPrefabs() {
-        _mainMenuUI = Resources.Load<MainMenuUI>(_resourcePath + "MainMenuUI");
-        _gameUI = Resources.Load<GameUI>(_resourcePath + "GameUI");
+
+    private void GetPrefabs()
+    {
+        _mainMenuUIPrefab = Resources.Load<MainMenuUI>(_resourcePath + "MainMenuUI");
+        _gameUIPrefab = Resources.Load<GameUI>(_resourcePath + "GameUI");
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         Events.GameEvents.OnMainMenuStarted += DisplayMainUI;
         Events.GameEvents.OnLevelGenerated += DisplayGameUI;
         Events.GameEvents.OnNotifyGameEnd += DisplayGameOver;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         Events.GameEvents.OnMainMenuStarted -= DisplayMainUI;
         Events.GameEvents.OnLevelGenerated -= DisplayGameUI;
         Events.GameEvents.OnNotifyGameEnd -= DisplayGameOver;
     }
-    
-    public void DisplayMainUI() {
+
+    public void DisplayMainUI()
+    {
         _canvas = FindObjectOfType<Canvas>();
-        if (_mainMenuUI != null && _canvas != null) {
-            _mainMenuUI = Instantiate(_mainMenuUI, _canvas.transform);
+        if (_gameUI != null)
+        {
+            _gameUI.gameObject.SetActive(false);
+        }
+        if (_mainMenuUIPrefab != null && _canvas != null)
+        {
+
+            if (_mainMenuUI == null)
+            {
+                _mainMenuUI = Instantiate(_mainMenuUIPrefab, _canvas.transform);
+            }
+            else
+            {
+                _mainMenuUI.gameObject.SetActive(true);
+            }
+
             _mainMenuUI.Init();
         }
     }
 
-    public void DisplayGameUI(LevelInfo info) {
+    public void DisplayGameUI(LevelInfo info)
+    {
         _canvas = FindObjectOfType<Canvas>();
-        if (_gameUI != null && _canvas != null) {
-            _gameUI = Instantiate(_gameUI, _canvas.transform);
+
+        if (_mainMenuUI != null) {
+            _mainMenuUI.gameObject.SetActive(false);
+        }
+
+        if (_gameUIPrefab != null && _canvas != null)
+        {
+            if (_gameUI == null)
+            {
+                _gameUI = Instantiate(_gameUIPrefab, _canvas.transform);
+            } else {
+                _gameUI.gameObject.SetActive(true);
+            }
             _gameUI.Init(info);
         }
     }
 
-    public void UpdateMoves(int moveCount) {
-        if (_gameUI != null) {
+    public void UpdateMoves(int moveCount)
+    {
+        if (_gameUI != null)
+        {
             _gameUI.SetMoves(moveCount);
         }
     }
 
-
-    public void DisplayGameOver(bool isWin) {
-        if (!isWin) {
+    public void DisplayGameOver(bool isWin)
+    {
+        if (!isWin)
+        {
             ShowFail();
         }
     }
-    private void ShowFail() {
-        if (_gameUI != null) {
+    private void ShowFail()
+    {
+        if (_gameUI != null)
+        {
             _gameUI.DisplayFailPopUp(true);
         }
     }

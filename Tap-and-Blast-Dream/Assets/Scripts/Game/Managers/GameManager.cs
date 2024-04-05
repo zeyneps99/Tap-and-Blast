@@ -30,7 +30,7 @@ public class GameManager : Singleton<GameManager>
         Events.GameEvents.OnPlayerInput += RegisterBlastRequest;
         Events.GameEvents.OnBlast += PerformBlast;
         Events.GameEvents.OnGameOver += EndGame;
-        Events.GameEvents.OnTryAgain += PlayGame;
+        Events.GameEvents.OnTryAgain += TryAgain;
         Events.GameEvents.OnQuitLevel += StartMainMenu;
     }
 
@@ -39,7 +39,7 @@ public class GameManager : Singleton<GameManager>
         Events.GameEvents.OnPlayerInput -= RegisterBlastRequest;
         Events.GameEvents.OnBlast -= PerformBlast;
         Events.GameEvents.OnGameOver -= EndGame;
-        Events.GameEvents.OnTryAgain -= PlayGame;
+        Events.GameEvents.OnTryAgain -= TryAgain;
         Events.GameEvents.OnQuitLevel -= StartMainMenu;
     }
 
@@ -47,6 +47,13 @@ public class GameManager : Singleton<GameManager>
         return _isInGame;
     }
 
+    public void TryAgain() {
+        if (!IsInGame() && _isApplicationRunning) {
+        _isInGame = true;
+        GameLogic.Instance.PrepareGame();
+
+        }
+    }
     public void StartMainMenu() {
       _sceneManager.LoadScene((int) SceneTypes.MainScene, () => { Events.GameEvents.OnMainMenuStarted?.Invoke();});
     }

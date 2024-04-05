@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class LevelHelper : MonoBehaviour
 {
     private Board _board;
+    private Board _boardPrefab;
     private Level _level;
 
     private static string _boardPath = "Prefabs/Board/";
@@ -28,13 +29,16 @@ public class LevelHelper : MonoBehaviour
         {
             _canvas = FindObjectOfType<Canvas>();
         }
+        if (_boardPrefab == null){
+            _boardPrefab = Resources.Load<Board>(_boardPath + "Board");
+        }
         if (_board == null && _canvas != null)
         {
-            _board = Resources.Load<Board>(_boardPath + "Board");
-            _board = Instantiate(_board, _canvas.transform);
+            _board = Instantiate(_boardPrefab, _canvas.transform);
         }
         if (_board != null)
         {
+            _board.gameObject.SetActive(true);
             _board.Set(level.grid_width, level.grid_height, level.grid);
             //_board.Enable(true);
         }
@@ -116,6 +120,7 @@ public class LevelHelper : MonoBehaviour
     public void EndLevel() {
         if (_board != null) {
         _board.Reset();
+        _board.gameObject.SetActive(false);
         }
     }
 

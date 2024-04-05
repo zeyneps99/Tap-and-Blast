@@ -5,7 +5,7 @@ using UnityEngine;
 public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
 {
     private GameObject _objectPrefab;
-    private Queue<T> _pool = new Queue<T>();
+    private Queue<T> _pool;
     private Transform _parent;
     public const int _amount = 5;
 
@@ -16,6 +16,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         {
             _objectPrefab = go;
             _parent = t;
+            _pool = new Queue<T>();
         }
     }
     public T Get()
