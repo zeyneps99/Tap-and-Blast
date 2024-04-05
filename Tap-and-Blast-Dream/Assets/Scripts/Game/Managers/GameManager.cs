@@ -17,15 +17,18 @@ public class GameManager : Singleton<GameManager>
         _sceneManager = SceneManager.Instance;
     }
 
-    private void Start() {
-        if (!_isApplicationRunning) {
-            StartMainMenu();
+    private void Start()
+    {
+        if (!_isApplicationRunning)
+        {
             _isApplicationRunning = true;
+            StartMainMenu();
         }
     }
 
-    private void OnEnable() {
-        
+    private void OnEnable()
+    {
+
         Events.GameEvents.OnPlay += PlayGame;
         Events.GameEvents.OnPlayerInput += RegisterBlastRequest;
         Events.GameEvents.OnBlast += PerformBlast;
@@ -34,7 +37,8 @@ public class GameManager : Singleton<GameManager>
         Events.GameEvents.OnQuitLevel += OnQuitLevel;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         Events.GameEvents.OnPlay -= PlayGame;
         Events.GameEvents.OnPlayerInput -= RegisterBlastRequest;
         Events.GameEvents.OnBlast -= PerformBlast;
@@ -43,37 +47,50 @@ public class GameManager : Singleton<GameManager>
         Events.GameEvents.OnQuitLevel -= OnQuitLevel;
     }
 
-    public bool IsInGame() {
+    public bool IsInGame()
+    {
         return _isInGame;
     }
 
-    public void TryAgain() {
-        if (!IsInGame() && _isApplicationRunning) {
-        _isInGame = true;
-        GameLogic.Instance.PrepareGame();
-
-        }
-    }
-
-    private void OnQuitLevel() {
-        if (!IsInGame() && _isApplicationRunning) {
-            StartMainMenu();
-        }
-    }
-    public void StartMainMenu() {
-      _sceneManager.LoadScene((int) SceneTypes.MainScene, () => { Events.GameEvents.OnMainMenuStarted?.Invoke();});
-    }
-
-    private void PlayGame() {
-        if (_isApplicationRunning && !_isInGame) {
+    public void TryAgain()
+    {
+        if (!IsInGame() && _isApplicationRunning)
+        {
             _isInGame = true;
-             _sceneManager.LoadScene((int) SceneTypes.GameScene, () => 
-             { 
-                GameLogic.Instance.PrepareGame();
-             });
+            Debug.Log("tryagain");
+            GameLogic.Instance.PrepareGame();
+
         }
     }
-    private void RegisterBlastRequest(Blastable blastable) {
+
+    private void OnQuitLevel()
+    {
+
+            StartMainMenu();
+        
+    }
+    public void StartMainMenu()
+    {
+        if (!IsInGame() && _isApplicationRunning)
+        {
+            _sceneManager.LoadScene((int)SceneTypes.MainScene, () => { Events.GameEvents.OnMainMenuStarted?.Invoke(); });
+
+        }
+    }
+
+    private void PlayGame()
+    {
+        if (_isApplicationRunning && !_isInGame)
+        {
+            _isInGame = true;
+            _sceneManager.LoadScene((int)SceneTypes.GameScene, () =>
+            {
+                GameLogic.Instance.PrepareGame();
+            });
+        }
+    }
+    private void RegisterBlastRequest(Blastable blastable)
+    {
         GameLogic.Instance.LookForBlast(blastable);
     }
 
@@ -83,19 +100,23 @@ public class GameManager : Singleton<GameManager>
     }
 
     //todo
-    private void EndGame(bool isWin) {
+    private void EndGame(bool isWin)
+    {
         _isInGame = false;
-      
+
         GameLogic.Instance.EndGame(isWin);
 
-        if (isWin) {
-        _sceneManager.LoadScene((int) SceneTypes.MainScene, () => {
-        Events.GameEvents.OnNotifyGameEnd?.Invoke(true);
-        });
-        } else {
+        if (isWin)
+        {
+            _sceneManager.LoadScene((int)SceneTypes.MainScene, () =>
+            {
+                Events.GameEvents.OnNotifyGameEnd?.Invoke(true);
+            });
+        }
+        else
+        {
             Events.GameEvents.OnNotifyGameEnd?.Invoke(false);
         }
     }
-    
 
 }
