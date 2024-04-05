@@ -97,8 +97,6 @@ public class BoardEntityFactory
         return vase;
     }
 
-
-
     public void Return(BoardEntity entityToReturn) {
         if (entityToReturn.TryGetComponent(out Cube cube) ) {
             _cubePool.Put(cube);

@@ -40,7 +40,7 @@ public class LevelHelper : MonoBehaviour
         {
             _board.gameObject.SetActive(true);
             _board.Set(level.grid_width, level.grid_height, level.grid);
-            //_board.Enable(true);
+            _board.Enable(true);
         }
     }
 
@@ -119,6 +119,7 @@ public class LevelHelper : MonoBehaviour
 
     public void EndLevel() {
         if (_board != null) {
+        _board.Enable(false);
         _board.Reset();
         _board.gameObject.SetActive(false);
         }

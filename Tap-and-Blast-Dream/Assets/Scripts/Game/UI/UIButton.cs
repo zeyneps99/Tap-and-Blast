@@ -49,6 +49,7 @@ public class UIButton : MonoBehaviour, IAnimatable
              if (_buttonCallbacks != null && _buttonCallbacks.Count > 0)
                 {
                     _buttonCallbacks.ForEach(x => x.Invoke());
+                    Debug.Log("onclick");
                 }
         });
     }

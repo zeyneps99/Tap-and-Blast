@@ -16,20 +16,21 @@ public class MainMenuUI : MonoBehaviour
 
     public void Init()
     {
-
         if (_text != null)
         {
             _text.text = _levelstring + PlayerPrefs.GetInt("currentLevel", 1);
         }
-        
-        if (_playButton != null) {
+
+        if (_playButton != null)
+        {
             _playButton.AddListener(Play);
         }
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
-        if (_playButton != null) {
+        if (_playButton != null)
+        {
             _playButton.RemoveListener(Play);
         }
     }

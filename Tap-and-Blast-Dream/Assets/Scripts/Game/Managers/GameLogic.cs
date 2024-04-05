@@ -56,5 +56,4 @@ public class GameLogic : Singleton<GameLogic>
     }
 
 
-
 }

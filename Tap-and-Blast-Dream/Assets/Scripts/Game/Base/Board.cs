@@ -82,9 +82,6 @@ public class Board : MonoBehaviour
 
             }
         }
-
-        Enable(true);
-
     }
     private void IntializeGrid(GameObject container)
     {
@@ -125,7 +122,6 @@ public class Board : MonoBehaviour
     private BoardEntity[] GetGridItems(string[] grid)
     {
 
-        Debug.Log("entered");
         BoardEntity[] arr = new BoardEntity[grid.Length];
 
         if (grid == null || grid.Length == 0)
@@ -349,9 +345,6 @@ public class Board : MonoBehaviour
 
     public void Reset()
     {
-        Enable(false);
-
-        
         foreach (BoardEntity entity in Items)
         {
             RemoveItem(entity);

@@ -11,7 +11,7 @@ public class SceneManager : Singleton<SceneManager>
         {
             if (onComplete != null) {
                 UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, mode) => {
-                    onComplete?.Invoke(); 
+                    onComplete.Invoke(); 
             };
             }
             UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single); 

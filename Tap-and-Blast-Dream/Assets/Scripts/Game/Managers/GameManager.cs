@@ -31,7 +31,7 @@ public class GameManager : Singleton<GameManager>
         Events.GameEvents.OnBlast += PerformBlast;
         Events.GameEvents.OnGameOver += EndGame;
         Events.GameEvents.OnTryAgain += TryAgain;
-        Events.GameEvents.OnQuitLevel += StartMainMenu;
+        Events.GameEvents.OnQuitLevel += OnQuitLevel;
     }
 
     private void OnDisable() {
@@ -40,7 +40,7 @@ public class GameManager : Singleton<GameManager>
         Events.GameEvents.OnBlast -= PerformBlast;
         Events.GameEvents.OnGameOver -= EndGame;
         Events.GameEvents.OnTryAgain -= TryAgain;
-        Events.GameEvents.OnQuitLevel -= StartMainMenu;
+        Events.GameEvents.OnQuitLevel -= OnQuitLevel;
     }
 
     public bool IsInGame() {
@@ -52,6 +52,12 @@ public class GameManager : Singleton<GameManager>
         _isInGame = true;
         GameLogic.Instance.PrepareGame();
 
+        }
+    }
+
+    private void OnQuitLevel() {
+        if (!IsInGame() && _isApplicationRunning) {
+            StartMainMenu();
         }
     }
     public void StartMainMenu() {
@@ -67,7 +73,6 @@ public class GameManager : Singleton<GameManager>
              });
         }
     }
-
     private void RegisterBlastRequest(Blastable blastable) {
         GameLogic.Instance.LookForBlast(blastable);
     }

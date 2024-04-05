@@ -50,25 +50,28 @@ public class UIManager : Singleton<UIManager>
         }
         if (_mainMenuUIPrefab != null && _canvas != null)
         {
-
             if (_mainMenuUI == null)
             {
                 _mainMenuUI = Instantiate(_mainMenuUIPrefab, _canvas.transform);
             }
-            else
-            {
-                _mainMenuUI.gameObject.SetActive(true);
-            }
-
-            _mainMenuUI.Init();
         }
+
+        _mainMenuUI.Init();
+
+        if (_mainMenuUI != null && !_mainMenuUI.gameObject.activeInHierarchy)
+        {
+            _mainMenuUI.gameObject.SetActive(true);
+        }
+
+
     }
 
     public void DisplayGameUI(LevelInfo info)
     {
         _canvas = FindObjectOfType<Canvas>();
 
-        if (_mainMenuUI != null) {
+        if (_mainMenuUI != null)
+        {
             _mainMenuUI.gameObject.SetActive(false);
         }
 
@@ -77,11 +80,17 @@ public class UIManager : Singleton<UIManager>
             if (_gameUI == null)
             {
                 _gameUI = Instantiate(_gameUIPrefab, _canvas.transform);
-            } else {
-                _gameUI.gameObject.SetActive(true);
+
             }
-            _gameUI.Init(info);
         }
+
+        if (_gameUI != null && !_gameUI.gameObject.activeInHierarchy)
+        {
+            _gameUI.gameObject.SetActive(true);
+        }
+
+
+        _gameUI.Init(info);
     }
 
     public void UpdateMoves(int moveCount)
