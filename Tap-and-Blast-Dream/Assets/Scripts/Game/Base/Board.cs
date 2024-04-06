@@ -232,7 +232,6 @@ public class Board : MonoBehaviour
 
     public void ReplaceItemsAfterBlast()
     {
-        StartCoroutine(MakeFalliblesFall());
         List<Cube> replacementCubes = ReplaceFallibles();
         if (replacementCubes != null && replacementCubes.Count > 0)
         {
@@ -245,7 +244,11 @@ public class Board : MonoBehaviour
         }
     }
 
-    private IEnumerator MakeFalliblesFall()
+    public void MakeFalliblesFall(){
+        StartCoroutine(MakeFalliblesFallRoutine());
+    }
+
+    private IEnumerator MakeFalliblesFallRoutine()
     {
         int fallCount = 0;
         int completedFallCount = 0;
@@ -352,7 +355,6 @@ public class Board : MonoBehaviour
 
     public void SpawnTNT(Vector2Int boardPos)
     {
-
         int i = boardPos.x;
         int j = boardPos.y;
 
