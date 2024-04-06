@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -29,7 +30,8 @@ public class LevelHelper : MonoBehaviour
         {
             _canvas = FindObjectOfType<Canvas>();
         }
-        if (_boardPrefab == null){
+        if (_boardPrefab == null)
+        {
             _boardPrefab = Resources.Load<Board>(_boardPath + "Board");
         }
         if (_board == null && _canvas != null)
@@ -71,18 +73,22 @@ public class LevelHelper : MonoBehaviour
         return (_level.move_count < 1 || _goalRemaining.Count < 1);
     }
 
-    public void UpdateMoves(bool isIncrease){
+    public void UpdateMoves(bool isIncrease)
+    {
         _level.move_count += isIncrease ? 1 : -1;
         UIManager.Instance.UpdateMoves(_level.move_count);
     }
 
-    //TODO
-    public void HandleBlast(List<Blastable> list)
+    public void HandleBlast(List<Blastable> list, Blastable chosenBlastable)
     {
         _board.Enable(false);
         UpdateMoves(false);
         Vector2Int pos = Vector2Int.zero;
         int itemsToAnimate = 0;
+        bool spawnTNT = list.Count >= 5 && list.All(item => item is Cube);
+        var tntPosition = _board.GetPositionOfItem(chosenBlastable);
+
+
         foreach (Blastable item in list)
         {
             if (item.TryGetComponent(out IAnimatable animatable))
@@ -94,6 +100,11 @@ public class LevelHelper : MonoBehaviour
                     itemsToAnimate++;
                     if (itemsToAnimate == list.Count)
                     {
+                        if (spawnTNT)
+                        {
+
+                            _board.SpawnTNT(tntPosition); 
+                        }
                         FillEmptySpaces();
                     };
                 });
@@ -117,11 +128,13 @@ public class LevelHelper : MonoBehaviour
         _board.Enable(true);
     }
 
-    public void EndLevel() {
-        if (_board != null) {
-        _board.Enable(false);
-        _board.Reset();
-        _board.gameObject.SetActive(false);
+    public void EndLevel()
+    {
+        if (_board != null)
+        {
+            _board.Enable(false);
+            _board.Reset();
+            _board.gameObject.SetActive(false);
         }
     }
 

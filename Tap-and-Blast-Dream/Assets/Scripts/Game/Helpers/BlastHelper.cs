@@ -20,54 +20,50 @@ public class BlastHelper : MonoBehaviour
         _blastList = new List<Blastable>();
         Vector2Int pos = _board.GetPositionOfItem(_chosenBlastable);
         DFS(pos.x, pos.y);
-        //TODO: change for TNT checks
+   
         if (_blastList.Count >= 2)
         {
-            PerformMatch();
+            PerformBlast();
         }
     }
 
-     private void DFS(int row, int column)
-     {
-        if (_board == null) {
-            return;
-        }
-        
-        if (row < 0 || row >= _board.Width|| column < 0 || column >= _board.Height)
-        {
-            return;
-        }
-        if (_visited[row, column]) {
-            return;
-        }
-        BoardEntity neighbor = _board.Items[row, column];
-        if (neighbor == null) {
-            return;
-        } else {
-            if (neighbor.TryGetComponent(out Blastable blastableNeighbor)) {
-                
-               if( _chosenBlastable.CanBlastNeighbor(blastableNeighbor)) {
-                _visited[row, column] = true;
-                _blastList.Add(blastableNeighbor);
 
-                DFS(row - 1, column);
-                DFS(row + 1, column);
-                DFS(row, column - 1);
-                DFS(row, column + 1);
-               }
-               else {
 
-                return;
-               }
-            } else {
-                return;
-            }
-        }
-     }
-
-    private void PerformMatch()
+    private void DFS(int row, int column)
+{
+    if (row < 0 || row >= _board.Width || column < 0 || column >= _board.Height || _visited[row, column])
     {
-       Events.GameEvents.OnBlast?.Invoke(_blastList);
+        return;
+    }
+
+    _visited[row, column] = true;
+    BoardEntity neighbor = _board.Items[row, column];
+
+    if (_chosenBlastable.TryGetComponent(out Cube chosenCube))
+    {
+        if (neighbor.TryGetComponent(out Cube neighborCube) && chosenCube.Type == neighborCube.Type)
+        {
+            _blastList.Add(neighborCube);
+            
+            DFS(row - 1, column);
+            DFS(row + 1, column);
+            DFS(row, column - 1);
+            DFS(row, column + 1);
+        }
+    }
+    else if (_chosenBlastable.TryGetComponent(out TNT chosenTNT))
+    {
+        Debug.Log("blast tnt");
+    }
+    else
+    {
+    }
+}
+
+
+    private void PerformBlast()
+    {
+       Events.GameEvents.OnBlast?.Invoke(_blastList, _chosenBlastable);
     }
 
 }

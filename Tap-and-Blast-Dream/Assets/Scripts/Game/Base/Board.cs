@@ -227,7 +227,6 @@ public class Board : MonoBehaviour
             Items[pos.x, pos.y] = null;
             entity.Clear();
             _factory.Return(entity);
-
         }
     }
 
@@ -349,6 +348,30 @@ public class Board : MonoBehaviour
         {
             RemoveItem(entity);
         }
+    }
+
+    public void SpawnTNT(Vector2Int boardPos)
+    {
+
+        int i = boardPos.x;
+        int j = boardPos.y;
+
+        if (Items[i, j] == null && _container != null)
+        {
+            TNT tnt = _factory.GetTNT();
+            tnt.name = "Entity - " + i + " , " + j;
+            tnt.transform.SetParent(_container.transform, true);
+            tnt.transform.localScale = Vector2.one;
+            tnt.transform.position = _gridHelper.GetWorldPosition(new Vector2Int(i, j));
+            Vector2 cubeSize = _gridHelper.GetCellSize();
+            if (tnt.TryGetComponent(out RectTransform rt))
+            {
+                rt.sizeDelta = cubeSize;
+            }
+            Items[i, j] = tnt;
+        }
+
+
     }
 
 

@@ -34,13 +34,12 @@ public class GameLogic : Singleton<GameLogic>
         }
     }
 
-    public void HandleBlast(List<Blastable> blastables) {
-        if (blastables == null || blastables.Count <= 0) {
+    public void HandleBlast(List<Blastable> blastables, Blastable chosenBlastable) {
+        if (blastables == null || blastables.Count <= 0 || !blastables.Contains(chosenBlastable)) {
             return;
         }
         else {
-            //TODO
-                _levelHelper.HandleBlast(blastables);
+                _levelHelper.HandleBlast(blastables, chosenBlastable);
                 if (_levelHelper.IsLevelOver()) {
                 Events.GameEvents.OnGameOver?.Invoke(false);
             }

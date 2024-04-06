@@ -94,9 +94,9 @@ public class GameManager : Singleton<GameManager>
         GameLogic.Instance.LookForBlast(blastable);
     }
 
-    private void PerformBlast(List<Blastable> list)
+    private void PerformBlast(List<Blastable> list, Blastable chosenBlastable)
     {
-        GameLogic.Instance.HandleBlast(list);
+        GameLogic.Instance.HandleBlast(list, chosenBlastable);
     }
 
     //todo

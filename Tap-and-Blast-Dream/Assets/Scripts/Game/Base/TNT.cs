@@ -18,6 +18,6 @@ public class TNT : Blastable, IAnimatable, IFallible
     }
     public void Fall(Vector2 newPos, Action onComplete = null)
     {
-        throw new NotImplementedException();
+       // throw new NotImplementedException();
     }
 }
