@@ -6,7 +6,7 @@ using UnityEngine;
 public class BlastHelper : MonoBehaviour
 {
     private Board _board;
-    private List<Blastable> _blastList;
+    private List<BoardEntity> _blastList;
     private Blastable _chosenBlastable;
     private bool[,] _visited;
 
@@ -19,7 +19,7 @@ public class BlastHelper : MonoBehaviour
     {
         _chosenBlastable = blastable;
         _visited = new bool[_board.Width, _board.Height];
-        _blastList = new List<Blastable>();
+        _blastList = new List<BoardEntity>();
         Vector2Int pos = _board.GetPositionOfItem(_chosenBlastable);
         DFS(pos.x, pos.y);
 
@@ -28,6 +28,7 @@ public class BlastHelper : MonoBehaviour
             PerformBlast();
         }
     }
+
 
 
 
@@ -41,6 +42,11 @@ public class BlastHelper : MonoBehaviour
         _visited[row, column] = true;
         BoardEntity neighbor = _board.Items[row, column];
 
+        if (neighbor == null)
+        {
+            return;
+        }
+
         if (_chosenBlastable.TryGetComponent(out Cube chosenCube))
         {
             if (neighbor.TryGetComponent(out Cube neighborCube) && chosenCube.Type == neighborCube.Type)
@@ -53,14 +59,28 @@ public class BlastHelper : MonoBehaviour
                 DFS(row, column + 1);
             }
         }
-        else if (_chosenBlastable.TryGetComponent(out TNT chosenTNT))
+        else if (_chosenBlastable.TryGetComponent(out TNT _))
         {
-            Debug.Log("blast tnt");
-        }
-        else
-        {
+            for (int i = -2; i <= 2; i++)
+            {
+                for (int j = -2; j <= 2; j++)
+                {
+                    int newRow = row + i;
+                    int newColumn = column + j;
+
+                    if (Mathf.Abs(i) <= 2 && Mathf.Abs(j) <= 2 && newRow >= 0 && newRow < _board.Width && newColumn >= 0 && newColumn < _board.Height)
+                    {
+                        BoardEntity neighborEntity = _board.Items[newRow, newColumn];
+                        if (neighborEntity != null)
+                        {
+                            _blastList.Add(neighborEntity);
+                        }
+                    }
+                }
+            }
         }
     }
+
 
 
     private void PerformBlast()

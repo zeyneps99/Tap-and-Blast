@@ -15,7 +15,7 @@ public static partial class Events
         public static Action OnPlay;
         public static Action<LevelInfo> OnLevelGenerated;
         public static Action<Blastable> OnPlayerInput;
-        public static Action<List<Blastable>, Blastable> OnBlast;
+        public static Action<List<BoardEntity>, Blastable> OnBlast;
         public static Action<bool> OnGameOver;
         public static Action OnTryAgain;
         public static Action OnQuitLevel;

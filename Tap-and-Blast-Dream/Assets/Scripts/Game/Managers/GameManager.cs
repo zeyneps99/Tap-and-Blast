@@ -94,7 +94,7 @@ public class GameManager : Singleton<GameManager>
         GameLogic.Instance.LookForBlast(blastable);
     }
 
-    private void PerformBlast(List<Blastable> list, Blastable chosenBlastable)
+    private void PerformBlast(List<BoardEntity> list, Blastable chosenBlastable)
     {
         GameLogic.Instance.HandleBlast(list, chosenBlastable);
     }

@@ -37,7 +37,7 @@ public class Obstacle : BoardEntity, IAnimatable, IDamageable
 
     public void Animate(Action onComplete = null)
     {
-        throw new NotImplementedException();
+        // throw new NotImplementedException();
     }
 
 

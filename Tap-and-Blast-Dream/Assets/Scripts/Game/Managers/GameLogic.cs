@@ -34,7 +34,7 @@ public class GameLogic : Singleton<GameLogic>
         }
     }
 
-    public void HandleBlast(List<Blastable> blastables, Blastable chosenBlastable) {
+    public void HandleBlast(List<BoardEntity> blastables, Blastable chosenBlastable) {
         if (blastables == null || blastables.Count <= 0 || !blastables.Contains(chosenBlastable)) {
             return;
         }

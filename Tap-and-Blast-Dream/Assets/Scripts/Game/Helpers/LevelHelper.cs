@@ -79,7 +79,7 @@ public class LevelHelper : MonoBehaviour
         UIManager.Instance.UpdateMoves(_level.move_count);
     }
 
-    public void HandleBlast(List<Blastable> list, Blastable chosenBlastable)
+    public void HandleBlast(List<BoardEntity> list, Blastable chosenBlastable)
     {
         _board.Enable(false);
         UpdateMoves(false);
@@ -88,7 +88,7 @@ public class LevelHelper : MonoBehaviour
         bool spawnTNT = list.Count >= 5 && list.All(item => item is Cube);
         var tntPosition = _board.GetPositionOfItem(chosenBlastable);
 
-        foreach (Blastable item in list)
+        foreach (BoardEntity item in list)
         {
             if (item.TryGetComponent(out IAnimatable animatable))
             {
