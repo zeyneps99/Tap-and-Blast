@@ -15,7 +15,9 @@ public class MainMenuUI : MonoBehaviour
     {
         if (_text != null)
         {
-            _text.text = _levelstring + PlayerPrefs.GetInt("currentLevel", 1);
+            int currentLevel = PlayerPrefs.GetInt("currentLevel", 1);
+   
+            _text.text = currentLevel <= 10 ? _levelstring + currentLevel.ToString() : _completeString;
         }
 
         if (_playButton != null)

@@ -31,6 +31,7 @@ public class Board : MonoBehaviour
         Height = height;
         Items = new BoardEntity[Width, Height];
         SetBoard(grid);
+
     }
 
 
@@ -78,6 +79,8 @@ public class Board : MonoBehaviour
 
             }
         }
+        Enable(true);
+
     }
     private void IntializeGrid(GameObject container)
     {
