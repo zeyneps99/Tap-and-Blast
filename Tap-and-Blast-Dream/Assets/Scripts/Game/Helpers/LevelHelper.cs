@@ -74,7 +74,8 @@ public class LevelHelper : MonoBehaviour
         return (_level.move_count < 1 && _goalRemaining.Values.Any(value => value > 0));
     }
 
-    public bool IsGoalComplete() {
+    public bool IsGoalComplete()
+    {
 
         return (_level.move_count >= 0 && !_goalRemaining.Values.Any(value => value > 0));
     }
@@ -176,24 +177,36 @@ public class LevelHelper : MonoBehaviour
 
                 if (isClear)
                 {
-                    _board.RemoveItem(obstacle);
-                    _goalRemaining[obstacle.Type]--;
+                    if (obstacle.TryGetComponent(out IAnimatable animatable))
+                    {
+                        animatable.Animate(() =>
+                        {
+                            _board.RemoveItem(obstacle);
+                            _goalRemaining[obstacle.Type]--;
+                        });
+                    }
+                    else
+                    {
+                        _board.RemoveItem(obstacle);
+                        _goalRemaining[obstacle.Type]--;
+                    }
                 }
             }
+
         }
-
-
-
     }
 
-    public void EndLevel()
+
+
+
+public void EndLevel()
+{
+    if (_board != null)
     {
-        if (_board != null)
-        {
-            _board.Enable(false);
-            _board.Reset();
-            _board.gameObject.SetActive(false);
-        }
+        _board.Enable(false);
+        _board.Reset();
+        _board.gameObject.SetActive(false);
     }
+}
 
 }

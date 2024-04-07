@@ -100,7 +100,6 @@ public class GameManager : Singleton<GameManager>
         GameLogic.Instance.HandleBlast(list, chosenBlastable);
     }
 
-    //todo
     private void EndGame(bool isWin)
     {
         _isInGame = false;
