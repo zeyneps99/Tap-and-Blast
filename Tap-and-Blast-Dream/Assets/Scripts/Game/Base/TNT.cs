@@ -13,7 +13,7 @@ public class TNT : Blastable, IAnimatable, IFallible
     public float Duration { get; set; }
     private float rotationAngle = 360f;
 
-    private ParticleSystem _blastParticles;
+    [SerializeField] private ParticleSystem _blastParticles;
 
     private Image _image;
 
@@ -33,20 +33,22 @@ public class TNT : Blastable, IAnimatable, IFallible
     {
         if (_blastParticles != null)
         {
+            _image.enabled = false;
 
             Sequence sequence = DOTween.Sequence();
+            StartCoroutine(ParticleAnimationRoutine(_blastParticles, onComplete));
             sequence.Append(transform.DOShakeScale(Duration)).SetEase(Ease.OutBounce)
             .OnComplete(() =>
             {
-                _image.enabled = false;
-                StartCoroutine(ParticleAnimationRoutine(_blastParticles, onComplete));
+
             });
-            
-        } else {
+
+        }
+        else
+        {
             onComplete?.Invoke();
         }
     }
-
 
 
     private IEnumerator ParticleAnimationRoutine(ParticleSystem particles, Action onComplete = null)
