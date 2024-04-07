@@ -109,10 +109,7 @@ public class GameManager : Singleton<GameManager>
 
         if (isWin)
         {
-            _sceneManager.LoadScene((int)SceneTypes.MainScene, () =>
-            {
-                Events.GameEvents.OnNotifyGameEnd?.Invoke(true);
-            });
+            Events.GameEvents.OnNotifyGameEnd?.Invoke(true);
         }
         else
         {

@@ -11,6 +11,7 @@ public class GameUI : MonoBehaviour
     [SerializeField] private GameObject _goalItemPrefab;
 
     [SerializeField] private FailPopUp _failPopUp;
+    [SerializeField] private CelebrationPanel _celebrationPanel;
 
     private Dictionary<ObstacleTypes, GoalItem> _goalItems;
 
@@ -29,6 +30,7 @@ public class GameUI : MonoBehaviour
 
         SetGoal(levelInfo.Goal);
         SetFailPopUp();
+        SetCelebrationPanel();
     }
 
     public void SetMoves(int moveCount) {
@@ -67,15 +69,19 @@ public class GameUI : MonoBehaviour
 
 
 
-
-
-
     private void SetFailPopUp()
     {
         if(_failPopUp != null) {
             _failPopUp.Display(false);
             _failPopUp.Init();
             _failPopUp.gameObject.SetActive(false);
+        }
+    }
+
+    private void SetCelebrationPanel() {
+        if (_celebrationPanel != null) {
+            _celebrationPanel.Init();
+            _celebrationPanel.gameObject.SetActive(false);
         }
     }
 
@@ -86,4 +92,16 @@ public class GameUI : MonoBehaviour
             _failPopUp.Animate();
         }
     }
+
+    public void DisplayCelebrationPanel() {
+         if (_celebrationPanel != null) {
+            _celebrationPanel.Init();
+            _celebrationPanel.gameObject.SetActive(true);
+            _celebrationPanel.Display();
+        }
+    }
+
+
+
+
 }

@@ -101,8 +101,10 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void UpdateGoal(Dictionary<ObstacleTypes, int> goal) {
-        if (_gameUI != null) {
+    public void UpdateGoal(Dictionary<ObstacleTypes, int> goal)
+    {
+        if (_gameUI != null)
+        {
             _gameUI.SetGoal(goal);
         }
     }
@@ -112,14 +114,19 @@ public class UIManager : Singleton<UIManager>
         if (!isWin)
         {
             ShowFail();
-        } else {
-            DisplayMainUI();
+        }
+        else
+        {
             ShowVictory();
         }
     }
 
-    private void ShowVictory() {
-
+    private void ShowVictory()
+    {
+        if (_gameUI != null)
+        {
+            _gameUI.DisplayCelebrationPanel();
+        }
     }
     private void ShowFail()
     {
@@ -128,6 +135,6 @@ public class UIManager : Singleton<UIManager>
             _gameUI.DisplayFailPopUp(true);
         }
     }
-    
+
 
 }
