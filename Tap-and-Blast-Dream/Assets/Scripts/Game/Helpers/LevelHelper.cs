@@ -121,7 +121,6 @@ public class LevelHelper : MonoBehaviour
             }
             else
             {
-                //TODO
                 CheckObstaclesAffected(item, affectedObstacles);
 
                 _board.RemoveItem(item);
@@ -166,6 +165,7 @@ public class LevelHelper : MonoBehaviour
 
             if (neighborEntity != null && neighborEntity.TryGetComponent(out Obstacle obstacle) && !affectedObstacles.Contains(obstacle))
             {
+                
                 affectedObstacles.Add(obstacle);
 
                 bool isClear = obstacle.TakeDamage();

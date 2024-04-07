@@ -48,12 +48,12 @@ public class Obstacle : BoardEntity, IAnimatable, IDamageable
 
     public void Animate(Action onComplete)
     {
+        if (_image != null)
+        {
+            _image.enabled = false;
+        }
         if (blastParticles != null)
         {
-            if (_image != null)
-            {
-                _image.enabled = false;
-            }
             StartCoroutine(ParticleAnimationRoutine(blastParticles, onComplete));
         }
     }

@@ -25,6 +25,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+
     private void OnEnable()
     {
 
@@ -44,6 +45,8 @@ public class GameManager : Singleton<GameManager>
         Events.GameEvents.OnGameOver -= EndGame;
         Events.GameEvents.OnTryAgain -= TryAgain;
         Events.GameEvents.OnQuitLevel -= OnQuitLevel;
+        _isApplicationRunning = false;
+
     }
 
     public bool IsInGame()
@@ -56,7 +59,6 @@ public class GameManager : Singleton<GameManager>
         if (!IsInGame() && _isApplicationRunning)
         {
             _isInGame = true;
-            Debug.Log("tryagain");
             GameLogic.Instance.PrepareGame();
 
         }
@@ -64,10 +66,9 @@ public class GameManager : Singleton<GameManager>
 
     private void OnQuitLevel()
     {
-
         StartMainMenu();
-
     }
+    
     public void StartMainMenu()
     {
         if (!IsInGame() && _isApplicationRunning)
