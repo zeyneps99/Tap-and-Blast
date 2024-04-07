@@ -69,7 +69,7 @@ public class BlastHelper : MonoBehaviour
                     if (Mathf.Abs(i) <= 2 && Mathf.Abs(j) <= 2 && newRow >= 0 && newRow < _board.Width && newColumn >= 0 && newColumn < _board.Height)
                     {
                         BoardEntity neighborEntity = _board.Items[newRow, newColumn];
-                        if (neighborEntity != null)
+                        if (neighborEntity != null && !neighborEntity.TryGetComponent(out Obstacle _))
                         {
                             _blastList.Add(neighborEntity);
                         }

@@ -15,7 +15,7 @@ public class Cube : Blastable, IAnimatable, IFallible
     [SerializeField] private ParticleSystem _blastParticles;
 
     private static string _spritePath = "Sprites/Cube/DefaultState/";
-    private static string _matPath = "Materials/";
+    private static string _matPath = "Materials/Cube/";
 
     public void SetType(int cubeType)
     {
@@ -43,7 +43,7 @@ public class Cube : Blastable, IAnimatable, IFallible
     {
         if ((CubeTypes)type != CubeTypes.None)
         {
-            Material mat = Resources.Load<Material>(_matPath + GetSpriteName(type) + "Particles");
+            Material mat = Resources.Load<Material>(_matPath + GetSpriteName(type).Trim() + "Particles");
             if (_blastParticles != null && mat != null)
             {
                 if (_blastParticles.TryGetComponent(out ParticleSystemRenderer renderer))

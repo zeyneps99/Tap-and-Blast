@@ -24,7 +24,6 @@ public class Obstacle : BoardEntity, IAnimatable, IDamageable
     public bool TakeDamage()
     {
         Health -= Damage;
-        Debug.Log(name + " damage taken");
         if (Health <= 0) {
             return true;
         }

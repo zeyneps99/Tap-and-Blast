@@ -80,6 +80,11 @@ public class LevelHelper : MonoBehaviour
         UIManager.Instance.UpdateMoves(_level.move_count);
     }
 
+    public void UpdateGoal()
+    {
+        UIManager.Instance.UpdateGoal(_goalRemaining);
+    }
+
     public void HandleBlast(List<BoardEntity> list, Blastable chosenBlastable)
     {
         _board.Enable(false);
@@ -109,17 +114,22 @@ public class LevelHelper : MonoBehaviour
                             _board.SpawnTNT(chosenPosition);
                         }
                         FillEmptySpaces();
+                        UpdateGoal();
                     };
                 });
             }
             else
             {
                 //TODO
+                CheckObstaclesAffected(item, affectedObstacles);
+
                 _board.RemoveItem(item);
                 itemsToAnimate++;
                 if (itemsToAnimate == list.Count)
                 {
                     FillEmptySpaces();
+                    UpdateGoal();
+
                 }
             }
 
@@ -162,6 +172,7 @@ public class LevelHelper : MonoBehaviour
                 if (isClear)
                 {
                     _board.RemoveItem(obstacle);
+                    _goalRemaining[obstacle.Type]--;
                 }
             }
         }

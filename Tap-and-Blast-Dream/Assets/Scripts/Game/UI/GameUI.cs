@@ -20,6 +20,13 @@ public class GameUI : MonoBehaviour
         _levelInfo = levelInfo;
         _goalItems = new Dictionary<ObstacleTypes, GoalItem>();
         SetMoves(levelInfo.MoveCount);
+
+         if (_goalContainer != null && _goalContainer.GetComponentsInChildren<GoalItem>() != null) {
+            foreach(GoalItem item in _goalContainer.GetComponentsInChildren<GoalItem>()){
+                DestroyImmediate(item.gameObject);
+            }
+        }
+
         SetGoal(levelInfo.Goal);
         SetFailPopUp();
     }
@@ -30,16 +37,12 @@ public class GameUI : MonoBehaviour
         }
     }
 
-    private void SetGoal(Dictionary<ObstacleTypes, int> goal) {
+    public void SetGoal(Dictionary<ObstacleTypes, int> goal) {
         if (goal == null || _goalItems == null) {
             return;
         }
 
-        if (_goalContainer != null && _goalContainer.GetComponentsInChildren<GoalItem>() != null) {
-            foreach(GoalItem item in _goalContainer.GetComponentsInChildren<GoalItem>()){
-                DestroyImmediate(item.gameObject);
-            }
-        }
+       
 
         foreach(ObstacleTypes type in goal.Keys) {
             if (goal[type] <= 0 && _goalItems.ContainsKeySafe(type)) {
@@ -61,6 +64,11 @@ public class GameUI : MonoBehaviour
             }
         }
     }
+
+
+
+
+
 
     private void SetFailPopUp()
     {

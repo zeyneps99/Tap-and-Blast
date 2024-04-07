@@ -195,7 +195,7 @@ public class Board : MonoBehaviour
         List<Obstacle> obstacles = new List<Obstacle>();
         foreach (BoardEntity entity in Items)
         {
-            if (entity.TryGetComponent(out Obstacle obstacle))
+            if (entity.TryGetComponent(out Obstacle obstacle) && !obstacles.Contains(obstacle))
             {
                 obstacles.Add(obstacle);
             }

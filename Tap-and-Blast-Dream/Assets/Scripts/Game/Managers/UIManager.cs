@@ -101,12 +101,18 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    public void UpdateGoal(Dictionary<ObstacleTypes, int> goal) {
+        if (_gameUI != null) {
+            _gameUI.SetGoal(goal);
+        }
+    }
+
     public void DisplayGameOver(bool isWin)
     {
         if (!isWin)
         {
             ShowFail();
-        }
+        } 
     }
     private void ShowFail()
     {
@@ -115,5 +121,6 @@ public class UIManager : Singleton<UIManager>
             _gameUI.DisplayFailPopUp(true);
         }
     }
+    
 
 }

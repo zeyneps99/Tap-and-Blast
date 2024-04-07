@@ -58,14 +58,11 @@ public class TNT : Blastable, IAnimatable, IFallible
         onComplete?.Invoke();
     }
 
-    //TODO: fix animation
     public void Fall(Vector2 newPos, Action onComplete = null)
     {
         Sequence sequence = DOTween.Sequence();
 
-        sequence.Append(transform.DORotate(new Vector3(0, rotationAngle, 0), Duration, RotateMode.FastBeyond360));
-
-        sequence.Join(transform.DOMoveY(newPos.y, Duration)
+        sequence.Append(transform.DOMoveY(newPos.y, Duration)
             .SetEase(Ease.OutBounce));
 
         sequence.OnComplete(() =>
