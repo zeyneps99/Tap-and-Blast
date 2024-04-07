@@ -319,7 +319,7 @@ public class Board : MonoBehaviour
 
     }
 
-    private bool IsIndexOutOfBounds(Vector2Int pos)
+    public bool IsIndexOutOfBounds(Vector2Int pos)
     {
         return (pos.x < 0 || pos.x >= Width || pos.y < 0 || pos.y >= Height);
     }

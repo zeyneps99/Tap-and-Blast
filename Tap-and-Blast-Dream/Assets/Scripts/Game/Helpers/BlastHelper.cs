@@ -30,8 +30,6 @@ public class BlastHelper : MonoBehaviour
     }
 
 
-
-
     private void DFS(int row, int column)
     {
         if (row < 0 || row >= _board.Width || column < 0 || column >= _board.Height || _visited[row, column])

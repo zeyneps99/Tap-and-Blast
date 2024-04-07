@@ -84,10 +84,12 @@ public class LevelHelper : MonoBehaviour
     {
         _board.Enable(false);
         UpdateMoves(false);
+
         Vector2Int pos = Vector2Int.zero;
         int itemsToAnimate = 0;
         bool spawnTNT = list.Count >= 5 && list.All(item => item is Cube);
         var chosenPosition = _board.GetPositionOfItem(chosenBlastable);
+        List<Obstacle> affectedObstacles = new List<Obstacle>();
 
         foreach (BoardEntity item in list)
         {
@@ -98,6 +100,7 @@ public class LevelHelper : MonoBehaviour
                 {
                     _board.RemoveItem(item);
                     itemsToAnimate++;
+                    CheckObstaclesAffected(item, affectedObstacles);
                     if (itemsToAnimate == list.Count)
                     {
                         if (spawnTNT)
@@ -127,6 +130,36 @@ public class LevelHelper : MonoBehaviour
         _board.MakeFalliblesFall();
         _board.ReplaceItemsAfterBlast();
         _board.Enable(true);
+    }
+
+
+    public void CheckObstaclesAffected(BoardEntity blastedEntity, List<Obstacle> affectedObstacles)
+    {
+        Vector2Int blastPosition = _board.GetPositionOfItem(blastedEntity);
+
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                if (i == 0 && j == 0) continue;
+
+                Vector2Int neighborPosition = blastPosition + new Vector2Int(i, j);
+
+                if (_board.IsIndexOutOfBounds(neighborPosition))
+                {
+                    continue;
+                }
+
+                BoardEntity neighborEntity = _board.Items[neighborPosition.x, neighborPosition.y];
+
+                if (neighborEntity != null && neighborEntity.TryGetComponent(out Obstacle obstacle) && !affectedObstacles.Contains(obstacle))
+                {
+                    affectedObstacles.Add(obstacle);
+                    obstacle.TakeDamage();
+                }
+            }
+        }
+
     }
 
     public void EndLevel()

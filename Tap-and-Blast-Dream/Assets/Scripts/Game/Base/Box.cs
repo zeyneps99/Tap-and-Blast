@@ -9,5 +9,7 @@ public class Box : Obstacle
         health = 1f;
     }
 
+    
+
 
 }
