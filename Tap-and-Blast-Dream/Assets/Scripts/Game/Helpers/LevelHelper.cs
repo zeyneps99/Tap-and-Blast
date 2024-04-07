@@ -86,7 +86,7 @@ public class LevelHelper : MonoBehaviour
         Vector2Int pos = Vector2Int.zero;
         int itemsToAnimate = 0;
         bool spawnTNT = list.Count >= 5 && list.All(item => item is Cube);
-        var tntPosition = _board.GetPositionOfItem(chosenBlastable);
+        var chosenPosition = _board.GetPositionOfItem(chosenBlastable);
 
         foreach (BoardEntity item in list)
         {
@@ -101,7 +101,7 @@ public class LevelHelper : MonoBehaviour
                     {
                         if (spawnTNT)
                         {
-                            _board.SpawnTNT(tntPosition);
+                            _board.SpawnTNT(chosenPosition);
                         }
                         FillEmptySpaces();
                     };
@@ -109,6 +109,7 @@ public class LevelHelper : MonoBehaviour
             }
             else
             {
+                //TODO
                 _board.RemoveItem(item);
                 itemsToAnimate++;
                 if (itemsToAnimate == list.Count)

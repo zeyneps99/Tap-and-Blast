@@ -42,6 +42,8 @@ public class TNT : Blastable, IAnimatable, IFallible
                 StartCoroutine(ParticleAnimationRoutine(_blastParticles, onComplete));
             });
             
+        } else {
+            onComplete?.Invoke();
         }
     }
 

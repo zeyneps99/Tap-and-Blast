@@ -358,7 +358,7 @@ public class Board : MonoBehaviour
         int i = boardPos.x;
         int j = boardPos.y;
 
-        if (Items[i, j] == null && _container != null)
+        if (!IsIndexOutOfBounds(boardPos) && Items[i, j] == null && _container != null)
         {
             TNT tnt = _factory.GetTNT();
             tnt.name = "Entity - " + i + " , " + j;
