@@ -118,6 +118,7 @@ public class UIManager : Singleton<UIManager>
         else
         {
             ShowVictory();
+            
         }
     }
 

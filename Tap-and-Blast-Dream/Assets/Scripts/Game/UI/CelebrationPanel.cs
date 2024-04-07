@@ -96,6 +96,7 @@ public class CelebrationPanel : MonoBehaviour
             sequence.Play();
            yield return null;
         }
+        
         AnimateStar();
 
     }

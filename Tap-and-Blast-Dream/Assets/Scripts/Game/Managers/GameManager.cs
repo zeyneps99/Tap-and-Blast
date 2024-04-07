@@ -67,8 +67,8 @@ public class GameManager : Singleton<GameManager>
     private void OnQuitLevel()
     {
 
-            StartMainMenu();
-        
+        StartMainMenu();
+
     }
     public void StartMainMenu()
     {
@@ -106,15 +106,22 @@ public class GameManager : Singleton<GameManager>
         _isInGame = false;
 
         GameLogic.Instance.EndGame(isWin);
+        Events.GameEvents.OnNotifyGameEnd?.Invoke(isWin);
 
         if (isWin)
         {
-            Events.GameEvents.OnNotifyGameEnd?.Invoke(true);
+            StartCoroutine(ReturnToMainMenu());
+
         }
-        else
-        {
-            Events.GameEvents.OnNotifyGameEnd?.Invoke(false);
-        }
+
+    }
+
+
+    private IEnumerator ReturnToMainMenu()
+    {
+        yield return new WaitForSeconds(5f);
+        StartMainMenu();
+
     }
 
 }
