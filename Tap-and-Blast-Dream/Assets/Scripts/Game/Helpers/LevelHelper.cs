@@ -69,9 +69,14 @@ public class LevelHelper : MonoBehaviour
     {
         return _board;
     }
-    public bool IsLevelOver()
+    public bool IsOutOfMoves()
     {
-        return (_level.move_count < 1 || _goalRemaining.Count < 1);
+        return (_level.move_count < 1 && _goalRemaining.Values.Any(value => value > 0));
+    }
+
+    public bool IsGoalComplete() {
+
+        return (_level.move_count >= 0 && !_goalRemaining.Values.Any(value => value > 0));
     }
 
     public void UpdateMoves(bool isIncrease)

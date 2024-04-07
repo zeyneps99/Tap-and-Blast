@@ -13,6 +13,7 @@ public class GameManager : Singleton<GameManager>
 
     void Awake()
     {
+        PlayerPrefs.DeleteAll();
         DontDestroyOnLoad(this);
         _sceneManager = SceneManager.Instance;
     }

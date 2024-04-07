@@ -112,7 +112,14 @@ public class UIManager : Singleton<UIManager>
         if (!isWin)
         {
             ShowFail();
-        } 
+        } else {
+            DisplayMainUI();
+            ShowVictory();
+        }
+    }
+
+    private void ShowVictory() {
+
     }
     private void ShowFail()
     {
