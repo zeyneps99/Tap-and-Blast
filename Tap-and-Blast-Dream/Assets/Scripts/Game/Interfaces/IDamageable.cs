@@ -6,6 +6,6 @@ public interface IDamageable
 {
        public float Health {get; set;}
        public float Damage {get; set;}
-       public abstract void TakeDamage();
+       public abstract bool TakeDamage();
 
 }

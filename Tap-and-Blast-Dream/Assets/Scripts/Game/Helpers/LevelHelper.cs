@@ -95,12 +95,13 @@ public class LevelHelper : MonoBehaviour
         {
             if (item.TryGetComponent(out IAnimatable animatable))
             {
+                CheckObstaclesAffected(item, affectedObstacles);
+
                 pos = _board.GetPositionOfItem(item);
                 animatable.Animate(() =>
                 {
                     _board.RemoveItem(item);
                     itemsToAnimate++;
-                    CheckObstaclesAffected(item, affectedObstacles);
                     if (itemsToAnimate == list.Count)
                     {
                         if (spawnTNT)
@@ -137,28 +138,35 @@ public class LevelHelper : MonoBehaviour
     {
         Vector2Int blastPosition = _board.GetPositionOfItem(blastedEntity);
 
-        for (int i = -1; i <= 1; i++)
+        List<Vector2Int> neighborPositions = new List<Vector2Int>();
+
+        neighborPositions.Add(blastPosition + Vector2Int.up);
+        neighborPositions.Add(blastPosition + Vector2Int.down);
+        neighborPositions.Add(blastPosition + Vector2Int.left);
+        neighborPositions.Add(blastPosition + Vector2Int.right);
+
+        foreach (Vector2Int position in neighborPositions)
         {
-            for (int j = -1; j <= 1; j++)
+            if (_board.IsIndexOutOfBounds(position))
             {
-                if (i == 0 && j == 0) continue;
+                continue;
+            }
+            BoardEntity neighborEntity = _board.Items[position.x, position.y];
 
-                Vector2Int neighborPosition = blastPosition + new Vector2Int(i, j);
+            if (neighborEntity != null && neighborEntity.TryGetComponent(out Obstacle obstacle) && !affectedObstacles.Contains(obstacle))
+            {
+                affectedObstacles.Add(obstacle);
 
-                if (_board.IsIndexOutOfBounds(neighborPosition))
+                bool isClear = obstacle.TakeDamage();
+
+                if (isClear)
                 {
-                    continue;
-                }
-
-                BoardEntity neighborEntity = _board.Items[neighborPosition.x, neighborPosition.y];
-
-                if (neighborEntity != null && neighborEntity.TryGetComponent(out Obstacle obstacle) && !affectedObstacles.Contains(obstacle))
-                {
-                    affectedObstacles.Add(obstacle);
-                    obstacle.TakeDamage();
+                    _board.RemoveItem(obstacle);
                 }
             }
         }
+
+
 
     }
 

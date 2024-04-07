@@ -21,13 +21,14 @@ public class Obstacle : BoardEntity, IAnimatable, IDamageable
         get { return damage; }
         set { damage = Mathf.Max(value, 0f); } 
     }
-    public void TakeDamage()
+    public bool TakeDamage()
     {
         Health -= Damage;
-        Debug.Log(name + " took damage");
+        Debug.Log(name + " damage taken");
         if (Health <= 0) {
-            Debug.Log("destroy " + name);
+            return true;
         }
+        return false;
     }
 
     public void SetType(int type)
