@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public enum SceneTypes {
+
+public enum SceneTypes
+{
 
     None = 0,
     StartScene = 1,

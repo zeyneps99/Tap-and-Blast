@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,7 +40,8 @@ public class Obstacle : BoardEntity, IAnimatable, IDamageable
         Type = (ObstacleTypes)type;
         _image = GetComponent<Image>();
 
-        if (_image != null) {
+        if (_image != null)
+        {
             _image.enabled = true;
         }
     }
@@ -50,7 +50,8 @@ public class Obstacle : BoardEntity, IAnimatable, IDamageable
     {
         if (blastParticles != null)
         {
-            if (_image != null) {
+            if (_image != null)
+            {
                 _image.enabled = false;
             }
             StartCoroutine(ParticleAnimationRoutine(blastParticles, onComplete));

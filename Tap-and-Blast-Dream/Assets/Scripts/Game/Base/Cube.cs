@@ -100,13 +100,14 @@ public class Cube : Blastable, IAnimatable, IFallible
             .SetEase(Ease.OutBounce)
             .OnComplete(() =>
             {
-                onComplete?.Invoke(); 
+                onComplete?.Invoke();
             });
     }
-    
 
-    public void SetVisible(bool isVisible) {
+
+    public void SetVisible(bool isVisible)
+    {
         _image.enabled = isVisible;
     }
-    
+
 }

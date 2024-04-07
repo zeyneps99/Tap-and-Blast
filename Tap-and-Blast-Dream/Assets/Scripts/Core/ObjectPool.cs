@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,11 +24,14 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
         {
             Add(_amount);
         }
-        if (_pool.Count > 0) {
+        if (_pool.Count > 0)
+        {
             var obj = _pool.Dequeue();
             obj.gameObject.SetActive(true);
             return obj;
-        } else {
+        }
+        else
+        {
             Debug.LogWarning(typeof(T) + " pool empty");
             return null;
         }
@@ -37,9 +39,10 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour
 
     public void Put(T obj)
     {
-        if (obj != null){
-        obj.gameObject.SetActive(false);
-        _pool.Enqueue(obj);
+        if (obj != null)
+        {
+            obj.gameObject.SetActive(false);
+            _pool.Enqueue(obj);
         }
 
     }

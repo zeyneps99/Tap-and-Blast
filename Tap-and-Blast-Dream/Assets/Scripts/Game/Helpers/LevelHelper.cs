@@ -1,11 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LevelHelper : MonoBehaviour
 {
@@ -199,14 +194,14 @@ public class LevelHelper : MonoBehaviour
 
 
 
-public void EndLevel()
-{
-    if (_board != null)
+    public void EndLevel()
     {
-        _board.Enable(false);
-        _board.Reset();
-        _board.gameObject.SetActive(false);
+        if (_board != null)
+        {
+            _board.Enable(false);
+            _board.Reset();
+            _board.gameObject.SetActive(false);
+        }
     }
-}
 
 }

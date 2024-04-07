@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 public class GameLogic : Singleton<GameLogic>
 {
     private LevelHelper _levelHelper;
@@ -54,7 +50,8 @@ public class GameLogic : Singleton<GameLogic>
                 Events.GameEvents.OnGameOver?.Invoke(false);
             }
 
-            if (_levelHelper.IsGoalComplete()) {
+            if (_levelHelper.IsGoalComplete())
+            {
                 Events.GameEvents.OnGameOver?.Invoke(true);
             }
         }

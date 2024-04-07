@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public enum ObstacleTypes 
+public enum ObstacleTypes
 {
     None = 0,
     Box = 1,

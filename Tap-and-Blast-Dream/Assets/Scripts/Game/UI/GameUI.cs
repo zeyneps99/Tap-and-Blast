@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -17,13 +15,16 @@ public class GameUI : MonoBehaviour
 
     private LevelInfo _levelInfo;
 
-    public void Init(LevelInfo levelInfo) {
+    public void Init(LevelInfo levelInfo)
+    {
         _levelInfo = levelInfo;
         _goalItems = new Dictionary<ObstacleTypes, GoalItem>();
         SetMoves(levelInfo.MoveCount);
 
-         if (_goalContainer != null && _goalContainer.GetComponentsInChildren<GoalItem>() != null) {
-            foreach(GoalItem item in _goalContainer.GetComponentsInChildren<GoalItem>()){
+        if (_goalContainer != null && _goalContainer.GetComponentsInChildren<GoalItem>() != null)
+        {
+            foreach (GoalItem item in _goalContainer.GetComponentsInChildren<GoalItem>())
+            {
                 DestroyImmediate(item.gameObject);
             }
         }
@@ -33,36 +34,46 @@ public class GameUI : MonoBehaviour
         SetCelebrationPanel();
     }
 
-    public void SetMoves(int moveCount) {
-        if(_moveCount != null) {
+    public void SetMoves(int moveCount)
+    {
+        if (_moveCount != null)
+        {
             _moveCount.text = moveCount.ToString();
         }
     }
 
-    public void SetGoal(Dictionary<ObstacleTypes, int> goal) {
-        if (goal == null || _goalItems == null) {
+    public void SetGoal(Dictionary<ObstacleTypes, int> goal)
+    {
+        if (goal == null || _goalItems == null)
+        {
             return;
         }
 
-       
 
-        foreach(ObstacleTypes type in goal.Keys) {
-            if (goal[type] <= 0 && _goalItems.ContainsKeySafe(type)) {
-                if (_goalItems[type] != null) {
+
+        foreach (ObstacleTypes type in goal.Keys)
+        {
+            if (goal[type] <= 0 && _goalItems.ContainsKeySafe(type))
+            {
+                if (_goalItems[type] != null)
+                {
                     DestroyImmediate(_goalItems[type].gameObject);
                 }
                 _goalItems.Remove(type);
             }
 
-            if (goal[type] > 0 && !_goalItems.ContainsKeySafe(type)) {
+            if (goal[type] > 0 && !_goalItems.ContainsKeySafe(type))
+            {
                 GameObject go = Instantiate(_goalItemPrefab, _goalContainer);
-                if (go.TryGetComponent(out GoalItem item)) {
-                    item.Set((int) type, goal[type]);
-                     _goalItems.Add(type, item);
+                if (go.TryGetComponent(out GoalItem item))
+                {
+                    item.Set((int)type, goal[type]);
+                    _goalItems.Add(type, item);
                 }
             }
-            else if (goal[type] > 0) {
-                _goalItems[type].Set((int) type, goal[type]);
+            else if (goal[type] > 0)
+            {
+                _goalItems[type].Set((int)type, goal[type]);
             }
         }
     }
@@ -71,30 +82,37 @@ public class GameUI : MonoBehaviour
 
     private void SetFailPopUp()
     {
-        if(_failPopUp != null) {
+        if (_failPopUp != null)
+        {
             _failPopUp.Display(false);
             _failPopUp.Init();
             _failPopUp.gameObject.SetActive(false);
         }
     }
 
-    private void SetCelebrationPanel() {
-        if (_celebrationPanel != null) {
+    private void SetCelebrationPanel()
+    {
+        if (_celebrationPanel != null)
+        {
             _celebrationPanel.Init();
             _celebrationPanel.gameObject.SetActive(false);
         }
     }
 
-    public void DisplayFailPopUp(bool isDisplay) {
-        if (_failPopUp != null) {
+    public void DisplayFailPopUp(bool isDisplay)
+    {
+        if (_failPopUp != null)
+        {
             _failPopUp.Display(isDisplay);
             _failPopUp.gameObject.SetActive(isDisplay);
             _failPopUp.Animate();
         }
     }
 
-    public void DisplayCelebrationPanel() {
-         if (_celebrationPanel != null) {
+    public void DisplayCelebrationPanel()
+    {
+        if (_celebrationPanel != null)
+        {
             _celebrationPanel.Init();
             _celebrationPanel.gameObject.SetActive(true);
             _celebrationPanel.Display();

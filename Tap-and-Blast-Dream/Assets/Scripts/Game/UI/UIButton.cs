@@ -23,7 +23,8 @@ public class UIButton : MonoBehaviour, IAnimatable
         _button.onClick.AddListener(OnClick);
     }
 
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         _button.onClick.RemoveListener(OnClick);
     }
 
@@ -45,11 +46,12 @@ public class UIButton : MonoBehaviour, IAnimatable
 
     private void OnClick()
     {
-        Animate(() => {
-             if (_buttonCallbacks != null && _buttonCallbacks.Count > 0)
-                {
-                    _buttonCallbacks.ForEach(x => x.Invoke());
-                }
+        Animate(() =>
+        {
+            if (_buttonCallbacks != null && _buttonCallbacks.Count > 0)
+            {
+                _buttonCallbacks.ForEach(x => x.Invoke());
+            }
         });
     }
 
@@ -62,7 +64,7 @@ public class UIButton : MonoBehaviour, IAnimatable
             sequence.Append(_foregroundObject.transform.DOScale(targetScale, scaleDuration).SetEase(easeType));
             sequence.Append(_foregroundObject.transform.DOScale(1f, scaleDuration).SetEase(easeType));
         }
-       
+
         sequence.OnComplete(() =>
             {
                 onComplete?.Invoke();
@@ -72,8 +74,8 @@ public class UIButton : MonoBehaviour, IAnimatable
     }
 
 
-public void Animate(Action onComplete = null)
-{
-    StartCoroutine(AnimateThenExecuteCallbacks(onComplete));
-}
+    public void Animate(Action onComplete = null)
+    {
+        StartCoroutine(AnimateThenExecuteCallbacks(onComplete));
+    }
 }

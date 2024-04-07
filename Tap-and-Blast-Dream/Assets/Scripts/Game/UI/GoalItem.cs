@@ -1,6 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,20 +10,24 @@ public class GoalItem : MonoBehaviour
 
     private static string _imagePath = "Sprites/Obstacles/";
 
-    public ObstacleTypes Type {private set; get;}
-    
-    public void Set(int type, int count) {
-        Type = (ObstacleTypes) type;
+    public ObstacleTypes Type { private set; get; }
+
+    public void Set(int type, int count)
+    {
+        Type = (ObstacleTypes)type;
         SetImage(Type);
-        if (_numberText != null) {
+        if (_numberText != null)
+        {
             _numberText.text = count.ToString();
         }
     }
 
-    private void SetImage(ObstacleTypes type) {
+    private void SetImage(ObstacleTypes type)
+    {
 
         string pathSuffix = "";
-        switch(type) {
+        switch (type)
+        {
             case ObstacleTypes.Box:
                 pathSuffix = "Box/box";
                 break;
@@ -41,10 +43,11 @@ public class GoalItem : MonoBehaviour
         }
 
         Sprite sprite = Resources.Load<Sprite>(_imagePath + pathSuffix);
-        if (sprite != null && _image != null) {
+        if (sprite != null && _image != null)
+        {
             _image.sprite = sprite;
         }
 
     }
-    
+
 }

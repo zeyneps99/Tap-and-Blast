@@ -1,5 +1,5 @@
 
-public enum CubeTypes 
+public enum CubeTypes
 {
     None = 0,
     Yellow = 1,

@@ -1,11 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 public class Board : MonoBehaviour
 {
     public int Width { get; private set; }
@@ -244,7 +240,8 @@ public class Board : MonoBehaviour
         }
     }
 
-    public void MakeFalliblesFall(){
+    public void MakeFalliblesFall()
+    {
         StartCoroutine(MakeFalliblesFallRoutine());
     }
 

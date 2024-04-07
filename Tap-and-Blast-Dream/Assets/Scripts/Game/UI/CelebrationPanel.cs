@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CelebrationPanel : MonoBehaviour
@@ -23,7 +21,8 @@ public class CelebrationPanel : MonoBehaviour
     private float _starAnimationDuration = 1.2f;
 
 
-    public void Init(){
+    public void Init()
+    {
         if (_celebrationText != null)
         {
             _celebrationText.text = _celebrationString;
@@ -44,15 +43,17 @@ public class CelebrationPanel : MonoBehaviour
         {
             _fireworkParticles.Stop();
         }
-        if (_starObject != null) {
-        _starObject.transform.localScale = 8 * Vector3.one;
-        _starObject.SetActive(false);
+        if (_starObject != null)
+        {
+            _starObject.transform.localScale = 8 * Vector3.one;
+            _starObject.SetActive(false);
         }
-       
+
     }
 
-    public void Display(){
-        
+    public void Display()
+    {
+
         AnimateText();
 
     }
@@ -94,9 +95,9 @@ public class CelebrationPanel : MonoBehaviour
             sequence.Append(_celebrationText.transform.DOScale(1f, _letterAnimationDelay * 2)
             .SetEase(Ease.OutBack));
             sequence.Play();
-           yield return null;
+            yield return null;
         }
-        
+
         AnimateStar();
 
     }
